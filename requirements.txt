@@ -17,3 +17,6 @@ GDAL==1.11.2
 git+https://github.com/bkg/greenwich.git@ac7b02308d6527e8bd1c174b53e37f55ad59db60#egg=greenwich
 
 Fabric==1.11.1
+
+# SSIM API
+git+https://gitlab.com/jsherba/ssim_python_API.git@62bc81d7c22668f39780dfc937fd893682362711#egg=ssim_api
