@@ -21,8 +21,9 @@ class SyncroSimAdmin(admin.ModelAdmin):
 class ScenarioAdmin(admin.ModelAdmin):
     date_hierarchy = 'last_modified'
     list_display = ('scenario', 'name', 'project', 'author')
+    search_fields = ('name',)
 
 
 @admin.register(models.SyncroSim)
 class SyncroSimAdmin(admin.ModelAdmin):
-    list_display = ('db', 'id')
+    list_display = ('id', 'db', 'uploaded')
