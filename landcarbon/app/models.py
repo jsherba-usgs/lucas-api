@@ -61,9 +61,12 @@ class SyncroSim(models.Model):
     """A model to manage SyncroSim SQLite databases."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     db = models.FileField()
+    upload = models.FileField(blank=True, null=True)
+    uploaded = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['db']
+        verbose_name_plural = 'syncro sim'
 
     def __unicode__(self):
         return unicode(self.db)
@@ -73,11 +76,11 @@ class SyncroSim(models.Model):
         cursor = connection.cursor()
         fields = [field for field in model._meta.fields if field.db_column]
         columns = ', '.join(field.column for field in fields)
-        attrs = [field.name for field in fields]
         params = {'columns': columns, 'table': model._meta.db_table}
         sql = 'SELECT {columns} FROM {table}'.format(**params)
         rows = cursor.execute(sql).fetchall()
         connection.close()
+        attrs = [field.name for field in fields]
         return [dict(zip(attrs, row)) for row in rows]
 
     def load_projects(self):
@@ -118,11 +121,14 @@ class Scenario(models.Model):
     project = models.ForeignKey(Project, db_column='ProjectID')
     name = models.TextField(db_column='Name', blank=True, null=True)
     author = models.TextField(db_column='Author', blank=True, null=True)
-    description = models.TextField(db_column='Description', blank=True, null=True)
+    description = models.TextField(db_column='Description',
+                                   blank=True, null=True)
     is_read_only = models.BooleanField(db_column='IsReadOnly')
-    runstatus = models.IntegerField(db_column='RunStatus', blank=True, null=True)
+    runstatus = models.IntegerField(db_column='RunStatus',
+                                    blank=True, null=True)
     runlog = models.TextField(db_column='RunLog', blank=True, null=True)
-    last_modified = models.DateTimeField(db_column='DateLastModified', blank=True, null=True)
+    last_modified = models.DateTimeField(db_column='DateLastModified',
+                                         blank=True, null=True)
 
     class Meta:
         db_table = 'SSim_Scenario'
