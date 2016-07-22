@@ -17,6 +17,13 @@ urlpatterns = [
         views.RasterStoreViewSet.as_view({'get': 'list'}),
         name='rasterstore-series-list'),
 
+    url(r'^scenario/(?P<scenario>[\d]+)/$',
+        views.ScenarioDetailView.as_view(), name='scenario-detail'),
+    url(r'^scenario/(?P<scenario>[\d]+)/states/$',
+        views.StateListView.as_view(), name='states-list'),
+    url(r'^scenario/(?P<scenario>[\d]+)/transitions/$',
+        views.TransitionListView.as_view(), name='transitions-list'),
+
     url(r'^tiles/(?P<slug>[\w-]+)/%s' % _tile,
         views.RasterMapView.as_view(), name='raster-tiles'),
     url(r'^vtiles/(?P<layers>[\w,]+)/%s' % _tile,

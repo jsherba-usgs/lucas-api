@@ -1,4 +1,5 @@
 from django.http import Http404
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from spillway import carto, forms, renderers
@@ -9,6 +10,43 @@ from . import filters, models, pagination, serializers
 from .renderers import CSVRenderer, PBFRenderer
 
 ReadOnlyGeoModelViewSet.pagination_class = pagination.FeaturePagination
+
+
+class ScenarioViewSet(ReadOnlyModelViewSet):
+    queryset = models.Scenario.objects.all()
+    serializer_class = serializers.ScenarioSerializer
+    lookup_field = 'scenario'
+
+
+class ScenarioDetailView(RetrieveAPIView):
+    queryset = models.Scenario.objects.all()
+    serializer_class = serializers.ScenarioSerializer
+    lookup_field = 'scenario'
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.query_params:
+            q = query.SimQuery(instance, request)
+            data = q.stateclasses().to_dict('records')
+            return Response(data)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class StateListView(ScenarioDetailView):
+    def get_object(self):
+        instance = super(StateListView, self).get_object()
+        return query.SimQuery(instance, self.request).stateclasses()
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        return Response(instance.to_dict('records'))
+
+
+class TransitionListView(StateListView):
+    def get_object(self):
+        instance = super(TransitionListView, self).get_object()
+        return query.SimQuery(instance, self.request).transitiongroups()
 
 
 class RasterSeriesViewSet(ReadOnlyModelViewSet):
