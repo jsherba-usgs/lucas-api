@@ -1,14 +1,39 @@
 from django.http import Http404
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from spillway import carto, forms, renderers
 from spillway.views import MapView, TileView
 from spillway.viewsets import ReadOnlyGeoModelViewSet, ReadOnlyRasterModelViewSet
 
-from . import filters, models, pagination, serializers
+from . import forms, filters, models, pagination, query, serializers
 from .renderers import CSVRenderer, PBFRenderer
 
 ReadOnlyGeoModelViewSet.pagination_class = pagination.FeaturePagination
+
+
+class ScenarioViewSet(ReadOnlyModelViewSet):
+    queryset = models.Scenario.objects.all()
+    serializer_class = serializers.ScenarioSerializer
+    lookup_field = 'scenario'
+
+
+class StateListView(ListAPIView):
+    queryset = query.StateClass()
+
+    def filter_queryset(self, queryset):
+        data = self.request.query_params.copy()
+        data.update(self.kwargs)
+        form = forms.QueryForm(data)
+        return queryset.filter(**form.params()).values()
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        return Response(queryset)
+
+
+class TransitionListView(StateListView):
+    queryset = query.TransitionGroup()
 
 
 class RasterSeriesViewSet(ReadOnlyModelViewSet):

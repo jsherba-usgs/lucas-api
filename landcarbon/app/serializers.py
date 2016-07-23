@@ -49,3 +49,8 @@ class RasterCSVSerializer(serializers.ModelSerializer):
                            for didx, arr in enumerate(obj.image)
                            for val in arr.ravel()]
         return native
+
+
+class ScenarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Scenario
