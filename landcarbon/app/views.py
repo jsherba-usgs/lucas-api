@@ -6,7 +6,7 @@ from spillway import carto, forms, renderers
 from spillway.views import MapView, TileView
 from spillway.viewsets import ReadOnlyGeoModelViewSet, ReadOnlyRasterModelViewSet
 
-from . import filters, models, pagination, serializers
+from . import forms, filters, models, pagination, query, serializers
 from .renderers import CSVRenderer, PBFRenderer
 
 ReadOnlyGeoModelViewSet.pagination_class = pagination.FeaturePagination
@@ -18,35 +18,22 @@ class ScenarioViewSet(ReadOnlyModelViewSet):
     lookup_field = 'scenario'
 
 
-class ScenarioDetailView(RetrieveAPIView):
-    queryset = models.Scenario.objects.all()
-    serializer_class = serializers.ScenarioSerializer
-    lookup_field = 'scenario'
+class StateListView(ListAPIView):
+    queryset = query.StateClass()
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        if request.query_params:
-            q = query.SimQuery(instance, request)
-            data = q.stateclasses().to_dict('records')
-            return Response(data)
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+    def filter_queryset(self, queryset):
+        data = self.request.query_params.copy()
+        data.update(self.kwargs)
+        form = forms.QueryForm(data)
+        return queryset.filter(**form.params()).values()
 
-
-class StateListView(ScenarioDetailView):
-    def get_object(self):
-        instance = super(StateListView, self).get_object()
-        return query.SimQuery(instance, self.request).stateclasses()
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        return Response(instance.to_dict('records'))
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        return Response(queryset)
 
 
 class TransitionListView(StateListView):
-    def get_object(self):
-        instance = super(TransitionListView, self).get_object()
-        return query.SimQuery(instance, self.request).transitiongroups()
+    queryset = query.TransitionGroup()
 
 
 class RasterSeriesViewSet(ReadOnlyModelViewSet):

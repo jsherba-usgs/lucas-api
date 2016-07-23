@@ -4,18 +4,32 @@ import ssim_api.ssim_postprocessing_functions as sp
 from . import forms, models
 
 
-class SimQuery(object):
-    def __init__(self, scenario, request):
-        self.scenario = scenario.scenario
-        self.db = scenario.project.ssim.db
-        form = forms.QueryForm(request.query_params)
-        self.params = form.params()
+class StateClass(object):
+    _query = lambda self: sq.db_query_stateclass
 
-    def build_query(self, fn):
-        return fn(self.db.path, scenario_id=(self.scenario,), **self.params)
+    def __init__(self):
+        self._results = ()
 
-    def stateclasses(self):
-        return self.build_query(sq.db_query_stateclass)
+    def __len__(self):
+        return len(self._results)
 
-    def transitiongroups(self):
-        return self.build_query(sq.db_query_transitiongroup)
+    def __getitem__(self, idx):
+        return self._results[idx]
+
+    def _do_query(self, params):
+        kw = params.copy()
+        scenarios = kw.pop('scenario')
+        obj = models.Scenario.objects.get(scenario=scenarios[0])
+        db = obj.project.ssim.db
+        self._results = self._query()(db.path, scenario_id=scenarios, **kw)
+        return self
+
+    def filter(self, **kwargs):
+        return self._do_query(kwargs)
+
+    def values(self):
+        return self._results.to_dict('records')
+
+
+class TransitionGroup(StateClass):
+    _query = lambda self: sq.db_query_transitiongroup
