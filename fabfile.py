@@ -41,6 +41,6 @@ def pushpull():
 def buildremote():
     """Push changes and run the latest development build."""
     pushpull()
-    supervisor('landcarbon-gunicorn', 'stop')
+    supervisor('landcarbon-cdi-gunicorn', 'stop')
     make('venv collectstatic')
-    supervisor('landcarbon-gunicorn', 'start')
+    supervisor('landcarbon-cdi-gunicorn', 'start')
