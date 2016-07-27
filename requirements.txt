@@ -1,5 +1,5 @@
 # Django related requirements
-django==1.9.7
+django==1.9.8
 django-filter==0.13.0
 psycopg2==2.6.1
 simplejson==3.8.2
@@ -17,7 +17,9 @@ GDAL==1.11.2
 #greenwich==0.6.1
 git+https://github.com/bkg/greenwich.git@ac7b02308d6527e8bd1c174b53e37f55ad59db60#egg=greenwich
 
-Fabric==1.11.1
+Fabric==1.12.0
 
 # SSIM API
-git+https://gitlab.com/jsherba/ssim_python_API.git@62bc81d7c22668f39780dfc937fd893682362711#egg=ssim_api
+# TODO: not on PyPI and git repo is ~400MB but there is a .zip in ./dist,
+# however we need to figure out authentication to GitLab for private repo.
+#https://gitlab.com/jsherba/ssim_python_API/blob/master/dist/ssim_api-0.0.2.zip
