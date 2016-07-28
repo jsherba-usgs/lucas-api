@@ -37,7 +37,9 @@ class StateClass(object):
         return self._do_query(kwargs)
 
     def values(self):
-        return self._results.to_dict('records') if self._results else []
+        if self._results is not None:
+            return self._results.to_dict('records')
+        return []
 
 
 class TransitionGroup(StateClass):
