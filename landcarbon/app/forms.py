@@ -1,5 +1,6 @@
 from django import forms
 
+
 class QueryForm(forms.Form):
     scenario = forms.IntegerField(required=False)
     stratum = forms.CharField(required=False)

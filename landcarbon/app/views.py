@@ -18,14 +18,11 @@ class ScenarioViewSet(viewsets.ReadOnlyModelViewSet):
     lookup_field = 'scenario'
 
 
-class StateListView(viewsets.ViewSetMixin, generics.ListAPIView):
-    queryset = query.StateClass()
-    queryform = forms.StateClassForm
+class QueryFormViewSet(viewsets.ReadOnlyModelViewSet):
+    queryform = None
 
     def filter_queryset(self, queryset):
-        data = self.request.query_params.copy()
-        data.update(self.kwargs)
-        form = self.queryform(data)
+        form = self.queryform(self.request.query_params.copy())
         return queryset.filter(**form.params()).values()
 
     def list(self, request, *args, **kwargs):
@@ -36,7 +33,12 @@ class StateListView(viewsets.ViewSetMixin, generics.ListAPIView):
         return Response(queryset)
 
 
-class TransitionListView(StateListView):
+class StateListView(QueryFormViewSet):
+    queryset = query.StateClass()
+    queryform = forms.StateClassForm
+
+
+class TransitionListView(QueryFormViewSet):
     queryset = query.TransitionGroup()
     queryform = forms.TransitionGroupForm
 
