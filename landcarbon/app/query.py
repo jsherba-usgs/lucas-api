@@ -9,7 +9,7 @@ class StateClass(object):
 
     def __init__(self):
         self._results = ()
-        self.model = models.SyncroSim
+        self.model = models.Scenario
 
     def __len__(self):
         return len(self._results)
@@ -22,13 +22,13 @@ class StateClass(object):
         scenarios = kw.pop('scenario', None)
         if not scenarios:
             return self.all()
-        obj = models.Scenario.objects.get(scenario=scenarios[0])
+        obj = self.model.objects.get(scenario=scenarios[0])
         db = obj.project.ssim.db
         self._results = self._query()(db.path, scenario_id=scenarios, **kw)
         return self
 
     def all(self):
-        obj = models.Scenario.objects.first()
+        obj = self.model.objects.first()
         self._results = self._query()(obj.project.ssim.db.path,
                                       scenario_id=(obj.scenario,))
         return self
