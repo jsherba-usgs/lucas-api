@@ -6,8 +6,8 @@ from . import views
 router = routers.DefaultRouter()
 router.register(r'series', views.RasterSeriesViewSet)
 router.register(r'rstores', views.RasterStoreViewSet)
-router.register(r'stateclasses', views.StateListView)
-router.register(r'transitions', views.TransitionListView)
+router.register(r'stateclasses', views.StateListView, 'stateclasses')
+router.register(r'transitions', views.TransitionListView, 'transitions')
 
 _format_suffix = r'(?:\.(?P<format>[\w.]+))?'
 _tile = r'(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+)%s/?$' % _format_suffix
