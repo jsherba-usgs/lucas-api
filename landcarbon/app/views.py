@@ -1,8 +1,8 @@
 from django.http import Http404
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework import generics, viewsets
 from rest_framework.response import Response
-from rest_framework.viewsets import ReadOnlyModelViewSet
-from spillway import carto, forms, renderers
+from spillway import carto, renderers
+from spillway.forms import VectorTileForm
 from spillway.views import MapView, TileView
 from spillway.viewsets import ReadOnlyGeoModelViewSet, ReadOnlyRasterModelViewSet
 
@@ -12,13 +12,13 @@ from .renderers import CSVRenderer, PBFRenderer
 ReadOnlyGeoModelViewSet.pagination_class = pagination.FeaturePagination
 
 
-class ScenarioViewSet(ReadOnlyModelViewSet):
+class ScenarioViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Scenario.objects.all()
     serializer_class = serializers.ScenarioSerializer
     lookup_field = 'scenario'
 
 
-class StateListView(ListAPIView):
+class StateListView(viewsets.ViewSetMixin, generics.ListAPIView):
     queryset = query.StateClass()
 
     def filter_queryset(self, queryset):
@@ -36,7 +36,7 @@ class TransitionListView(StateListView):
     queryset = query.TransitionGroup()
 
 
-class RasterSeriesViewSet(ReadOnlyModelViewSet):
+class RasterSeriesViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.RasterSeries.objects.prefetch_related(
         'rasters', 'tags')
     serializer_class = serializers.RasterSeriesSerializer
@@ -77,8 +77,8 @@ class TileLayersView(TileView):
             raise Http404('Layer does not exist')
         if not isinstance(request.accepted_renderer, renderers.MapnikRenderer):
             return Response(self.serialize_layers(views))
-        form = forms.VectorTileForm(dict(self.request.query_params.dict(),
-                                    **self.kwargs))
+        form = VectorTileForm(dict(self.request.query_params.dict(),
+                                   **self.kwargs))
         querysets = [v.queryset for v in views]
         m = carto.build_map(querysets, form)
         return Response(m.render(request.accepted_renderer.format))
