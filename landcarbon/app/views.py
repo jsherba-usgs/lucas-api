@@ -20,11 +20,12 @@ class ScenarioViewSet(viewsets.ReadOnlyModelViewSet):
 
 class StateListView(viewsets.ViewSetMixin, generics.ListAPIView):
     queryset = query.StateClass()
+    queryform = forms.StateClassForm
 
     def filter_queryset(self, queryset):
         data = self.request.query_params.copy()
         data.update(self.kwargs)
-        form = forms.QueryForm(data)
+        form = self.queryform(data)
         return queryset.filter(**form.params()).values()
 
     def list(self, request, *args, **kwargs):
@@ -37,6 +38,7 @@ class StateListView(viewsets.ViewSetMixin, generics.ListAPIView):
 
 class TransitionListView(StateListView):
     queryset = query.TransitionGroup()
+    queryform = forms.TransitionGroupForm
 
 
 class RasterSeriesViewSet(viewsets.ReadOnlyModelViewSet):

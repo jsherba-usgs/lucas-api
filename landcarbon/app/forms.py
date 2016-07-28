@@ -1,20 +1,11 @@
 from django import forms
 
-MOISTURE_ZONES = ('Dry', 'Wet', 'Mesic')
-ISLANDS = ("Hawai'i", 'Maui', "O'ahu")
-
-def repeat_items(lst, n=2):
-    return [(item,) * n for item in lst]
-
-
 class QueryForm(forms.Form):
     scenario = forms.IntegerField(required=False)
-    stratum_choices = repeat_items(MOISTURE_ZONES)
-    stratum = forms.MultipleChoiceField(
-        choices=stratum_choices, required=False)
-    secondary_stratum = forms.MultipleChoiceField(
-        choices=repeat_items(ISLANDS), required=False)
+    stratum = forms.CharField(required=False)
+    secondary_stratum = forms.CharField(required=False)
     timestep = forms.IntegerField(required=False)
+    iteration = forms.IntegerField(required=False, initial=1)
 
     def params(self):
         params = self.cleaned_data if self.is_valid() else {}
@@ -27,3 +18,11 @@ class QueryForm(forms.Form):
             elif not isinstance(v, tuple):
                 params[k] = (v,)
         return params
+
+
+class StateClassForm(QueryForm):
+    state_label_x = forms.CharField(required=False)
+
+
+class TransitionGroupForm(QueryForm):
+    transition_group = forms.CharField(required=False)
