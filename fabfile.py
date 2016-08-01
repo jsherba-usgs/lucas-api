@@ -7,7 +7,7 @@ import tempfile
 from fabric.api import *
 
 prefix = os.getenv('PREFIX') or '/var/www'
-pkgroot = os.path.join(prefix, 'hi.landcarbon.org', 'landcarbon-cdi')
+pkgroot = os.path.join(prefix, 'stage.landcarbon.org', 'landcarbon-cdi')
 env.shell = '/bin/sh -c'
 
 def putdb():
