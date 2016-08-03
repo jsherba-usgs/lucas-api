@@ -1,5 +1,5 @@
 # Django related requirements
-django==1.9.8
+django==1.9.9
 django-filter==0.13.0
 psycopg2==2.6.1
 simplejson==3.8.2
