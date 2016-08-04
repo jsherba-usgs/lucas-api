@@ -38,7 +38,9 @@ class StateClass(object):
 
     def values(self):
         if self._results is not None:
-            return self._results.to_dict('records')
+            df = self._results
+            df = df.where(df.notnull(), None)
+            return df.to_dict('records')
         return []
 
 
