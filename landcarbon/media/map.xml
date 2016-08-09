@@ -4,23 +4,16 @@
     <Rule>
       <RasterSymbolizer opacity="0.5">
         <RasterColorizer default-mode="discrete" default-color="transparent" epsilon="0.001">
-          <stop value="1" color="rgb(158,221,255)" label="Water"/>
-          <stop value="2" color="rgb(255,78,78)" label="Developed"/>
-          <stop value="3" color="rgb(143,143,143)" label="Mechanically Disturbed (National Forest)"/>
-          <stop value="4" color="rgb(209,155,255)" label="Mechanically Disturbed (Other Public Protected)"/>
-          <stop value="5" color="rgb(109,17,238)" label="Mechanically Disturbed (Private Land)"/>
-          <stop value="6" color="rgb(161,123,69)" label="Mining"/>
-          <stop value="7" color="rgb(170,166,145)" label="Barren"/>
-          <stop value="8" color="rgb(175,255,138)" label="Deciduous Forest"/>
-          <stop value="9" color="rgb(42,84,47)" label="Evergreen Forest"/>
-          <stop value="10" color="rgb(81,179,133)" label="Mixed Forest"/>
-          <stop value="11" color="rgb(191,235,174)" label="Grassland"/>
-          <stop value="12" color="rgb(163,179,102)" label="Shrubland"/>
-          <stop value="13" color="rgb(255,162,85)" label="Agriculture"/>
-          <stop value="14" color="rgb(255,255,155)" label="Hay/Pasture"/>
-          <stop value="15" color="rgb(52,187,224)" label="Herbaceous Wetland"/>
-          <stop value="16" color="rgb(123,255,194)" label="Woody Wetland"/>
-          <stop value="17" color="rgb(255,255,255)" label="Ice/Snow"/>
+          <stop value="1" color="#377eb8" label="Water"/>
+          <stop value="2" color="#999999" label="Developed"/>
+          <stop value="3" color="#984ea3" label="Plantation"/>
+          <!--<stop value="4" color="rgb(209,155,255)" label=""/>-->
+          <stop value="5" color="#e41a1c" label="Barren"/>
+          <stop value="6" color="#a65628" label="Forest"/>
+          <stop value="7" color="#4daf4a" label="Grassland"/>
+          <stop value="8" color="#ffff33" label="Agriculture"/>
+          <stop value="9" color="#f781bf" label="Wetland"/>
+          <stop value="10" color="#ff7f00" label="Shrubland"/>
         </RasterColorizer>
       </RasterSymbolizer>
     </Rule>
