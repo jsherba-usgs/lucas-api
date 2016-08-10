@@ -2,7 +2,7 @@
 
   <Style name="lulc">
     <Rule>
-      <RasterSymbolizer opacity="0.5">
+      <RasterSymbolizer>
         <RasterColorizer default-mode="discrete" default-color="transparent" epsilon="0.001">
           <stop value="1" color="#377eb8" label="Water"/>
           <stop value="2" color="#999999" label="Developed"/>
