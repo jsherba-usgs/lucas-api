@@ -51,6 +51,7 @@ class RasterStore(AbstractRasterStore):
     slug = models.SlugField(max_length=96, blank=True, null=True)
     units = models.CharField(choices=unit_choices, max_length=12,
                              blank=True, null=True)
+    iteration = models.IntegerField(blank=True, null=True)
     objects = RasterQuerySet.as_manager()
 
     def __unicode__(self):
@@ -129,6 +130,7 @@ class Scenario(models.Model):
     runlog = models.TextField(db_column='RunLog', blank=True, null=True)
     last_modified = models.DateTimeField(db_column='DateLastModified',
                                          blank=True, null=True)
+    rasters = models.ManyToManyField(RasterStore)
 
     class Meta:
         db_table = 'SSim_Scenario'
