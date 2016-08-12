@@ -3,8 +3,10 @@ from __future__ import unicode_literals
 import os
 import sqlite3
 import uuid
+import zipfile
 
 from django.contrib.gis.db import models
+from django.core.files.storage import default_storage
 from django.template.defaultfilters import slugify
 from spillway.models import AbstractRasterStore
 from spillway.query import GeoQuerySet, RasterQuerySet
@@ -97,9 +99,18 @@ class SyncroSim(models.Model):
             obj.save()
 
     def save(self, *args, **kwargs):
+        if self.upload:
+            self.unpack()
         super(SyncroSim, self).save(*args, **kwargs)
         self.load_projects()
         self.load_scenarios()
+
+    def unpack(self):
+        zf = zipfile.ZipFile(self.upload)
+        zf.extractall(default_storage.location)
+        for name in zf.namelist():
+            if name.endswith('.ssim'):
+                self.db = default_storage.path(name)
 
 
 class Project(models.Model):
