@@ -3,9 +3,9 @@ import sqlite3
 import tempfile
 import zipfile
 
+from django.core import management
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.core.urlresolvers import reverse
 from django.test import SimpleTestCase, TestCase
 
 from . import models, views
@@ -18,14 +18,8 @@ def sqlcreate():
 
 def make_simdb():
     fp = tempfile.NamedTemporaryFile(suffix='.db')
-    conn = sqlite3.connect(fp.name)
     with sqlite3.connect(fp.name) as conn:
-        conn.execute('CREATE TABLE SSim_Project (ProjectID INTEGER, Name TEXT)')
-        conn.execute('CREATE TABLE SSim_Scenario (ScenarioID INTEGER, '
-                     'ProjectID INTEGER, Name TEXT, author TEXT, '
-                     'Description TEXT, IsReadOnly INTEGER, '
-                     'RunStatus INTEGER, RunLog TEXT, '
-                     'DateLastModified DATE)')
+        conn.executescript('; '.join(sqlcreate()))
     return fp
 
 
