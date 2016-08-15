@@ -7,7 +7,9 @@ router = routers.DefaultRouter()
 router.register(r'series', views.RasterSeriesViewSet)
 router.register(r'rstores', views.RasterStoreViewSet)
 router.register(r'stateclasses', views.StateListView, 'stateclasses')
+router.register(r'statelabels', views.StateLabelView, 'statelabels')
 router.register(r'transitions', views.TransitionListView, 'transitions')
+router.register(r'transitiongroups', views.TransitionGroupView, 'transitiongroups')
 
 _format_suffix = r'(?:\.(?P<format>[\w.]+))?'
 _tile = r'(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+)%s/?$' % _format_suffix

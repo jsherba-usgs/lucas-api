@@ -1,5 +1,6 @@
-import ssim_api.ssim_query_functions as sq
+import ssim_api.ssim_general_functions as gf
 import ssim_api.ssim_postprocessing_functions as sp
+import ssim_api.ssim_query_functions as sq
 
 from . import models
 
@@ -46,3 +47,21 @@ class StateClass(object):
 
 class TransitionGroup(StateClass):
     _query = lambda self: sq.db_query_transitiongroup
+
+
+class TransitionGroupNames(StateClass):
+    def all(self):
+        obj = models.SyncroSim.objects.first()
+        self._results = gf.db_query_general(
+            obj.db.path, 'TransitionGroups',
+            table_name_project='STSim_TransitionGroup')
+        return self
+
+
+class StateLabelNames(StateClass):
+    def all(self):
+        obj = self.model.objects.first()
+        self._results = gf.db_query_general(
+            obj.project.ssim.db.path, 'StateLabelX',
+            table_name_project='STSim_StateLabelX')
+        return self

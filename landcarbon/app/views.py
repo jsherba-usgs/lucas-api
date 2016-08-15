@@ -38,8 +38,18 @@ class StateListView(QueryFormViewSet):
     queryform = forms.StateClassForm
 
 
+class StateLabelView(QueryFormViewSet):
+    queryset = query.StateLabelNames()
+    queryform = forms.StateClassForm
+
+
 class TransitionListView(QueryFormViewSet):
     queryset = query.TransitionGroup()
+    queryform = forms.TransitionGroupForm
+
+
+class TransitionGroupView(QueryFormViewSet):
+    queryset = query.TransitionGroupNames()
     queryform = forms.TransitionGroupForm
 
 
