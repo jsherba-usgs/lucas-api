@@ -20,6 +20,4 @@ git+https://github.com/bkg/greenwich.git@ac7b02308d6527e8bd1c174b53e37f55ad59db6
 Fabric==1.12.0
 
 # SSIM API
-# TODO: not on PyPI and git repo is ~400MB but there is a .zip in ./dist,
-# however we need to figure out authentication to GitLab for private repo.
-#https://gitlab.com/jsherba/ssim_python_API/blob/master/dist/ssim_api-0.0.2.zip
+https://github.com/usgs/ssim-api/archive/v0.0.2.tar.gz
