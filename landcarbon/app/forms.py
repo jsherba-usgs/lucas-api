@@ -10,6 +10,7 @@ class QueryForm(forms.Form):
 
     def params(self):
         params = self.cleaned_data if self.is_valid() else {}
+        print(params)
         for k, v in params.items():
             if not v:
                 params.pop(k)
@@ -24,6 +25,8 @@ class QueryForm(forms.Form):
 class StateClassForm(QueryForm):
     state_label_x = forms.CharField(required=False)
 
-
 class TransitionGroupForm(QueryForm):
     transition_group = forms.CharField(required=False)
+
+class StockTypeForm(QueryForm):
+    stock_type = forms.CharField(required=False)

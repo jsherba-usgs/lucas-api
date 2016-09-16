@@ -1,7 +1,7 @@
 import os
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
-DEBUG = False
+DEBUG = True
 
 ADMINS = (
     ('gitdev', 'gitdev@localhost'),
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'corsheaders',
     'rest_framework',
     'spillway',
     'landcarbon.app',
@@ -38,6 +39,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -46,6 +48,8 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True   
 
 ROOT_URLCONF = 'landcarbon.urls'
 

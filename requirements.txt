@@ -20,4 +20,4 @@ git+https://github.com/bkg/greenwich.git@ac7b02308d6527e8bd1c174b53e37f55ad59db6
 Fabric==1.12.0
 
 # SSIM API
-https://github.com/usgs/ssim-api/archive/v0.0.2.tar.gz
+https://github.com/usgs/ssim-api/archive/v0.0.3.tar.gz

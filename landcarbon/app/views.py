@@ -52,6 +52,10 @@ class TransitionGroupView(QueryFormViewSet):
     queryset = query.TransitionGroupNames()
     queryform = forms.TransitionGroupForm
 
+class StockTypeView(QueryFormViewSet):
+    queryset = query.StockType()
+    queryform = forms.StockTypeForm
+
 
 class RasterSeriesViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.RasterSeries.objects.prefetch_related(

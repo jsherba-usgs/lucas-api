@@ -48,6 +48,9 @@ class StateClass(object):
 class TransitionGroup(StateClass):
     _query = lambda self: sq.db_query_transitiongroup
 
+class StockType(StateClass):
+    _query = lambda self: sq.db_query_stock
+
 
 class TransitionGroupNames(StateClass):
     def all(self):

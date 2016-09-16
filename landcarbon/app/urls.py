@@ -10,6 +10,7 @@ router.register(r'stateclasses', views.StateListView, 'stateclasses')
 router.register(r'statelabels', views.StateLabelView, 'statelabels')
 router.register(r'transitions', views.TransitionListView, 'transitions')
 router.register(r'transitiongroups', views.TransitionGroupView, 'transitiongroups')
+router.register(r'stocktypes', views.StockTypeView, 'stocktypes')
 
 _format_suffix = r'(?:\.(?P<format>[\w.]+))?'
 _tile = r'(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+)%s/?$' % _format_suffix
