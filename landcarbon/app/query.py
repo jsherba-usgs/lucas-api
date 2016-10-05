@@ -20,12 +20,26 @@ class StateClass(object):
 
     def _do_query(self, params):
         kw = params.copy()
+        print(kw)
+        aggregate = kw.pop('aggregate', None)
+        percentile = kw.pop('percentile', None)
         scenarios = kw.pop('scenario', None)
         if not scenarios:
             return self.all()
         obj = self.model.objects.get(scenario=scenarios[0])
         db = obj.project.ssim.db
         self._results = self._query()(db.path, scenario_id=scenarios, **kw)
+        if aggregate:
+        	aggregate_by_columns = aggregate[0].split(",")
+        	column = "Amount"
+        	self._results = sp.aggregate_over(self._results, aggregate_by_columns, column)
+        if percentile:
+        	percentile_params = percentile[0].split(",")
+        	percentile_params[1]=float(percentile_params[1])
+        	percentile_params[2]=float(percentile_params[2])
+        	print(percentile_params)
+        	column = "Amount"
+        	self._results = sp.calculate_percentile(self._results, percentile_params, column)
         return self
 
     def all(self):
@@ -44,12 +58,23 @@ class StateClass(object):
             return df.to_dict('records')
         return []
 
+    
+
+
 
 class TransitionGroup(StateClass):
     _query = lambda self: sq.db_query_transitiongroup
 
 class StockType(StateClass):
     _query = lambda self: sq.db_query_stock
+
+class StockTypeNames(StateClass):
+	def all(self):
+	    obj = models.SyncroSim.objects.first()
+	    self._results = gf.db_query_general(
+	        obj.db.path, 'StockType',
+	        table_name_project='SF_StockType')
+	    return self
 
 
 class TransitionGroupNames(StateClass):

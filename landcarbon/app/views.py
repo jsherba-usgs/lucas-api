@@ -56,6 +56,10 @@ class StockTypeView(QueryFormViewSet):
     queryset = query.StockType()
     queryform = forms.StockTypeForm
 
+class StockTypeListView(QueryFormViewSet):
+    queryset = query.StockTypeNames()
+    queryform = forms.StockTypeForm
+
 
 class RasterSeriesViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.RasterSeries.objects.prefetch_related(

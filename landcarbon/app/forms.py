@@ -7,7 +7,8 @@ class QueryForm(forms.Form):
     secondary_stratum = forms.CharField(required=False)
     timestep = forms.IntegerField(required=False)
     iteration = forms.IntegerField(required=False, initial=1)
-
+    aggregate = forms.CharField(required=False)
+    percentile = forms.CharField(required=False)
     def params(self):
         params = self.cleaned_data if self.is_valid() else {}
         for k, v in params.items():

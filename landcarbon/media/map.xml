@@ -4,16 +4,26 @@
     <Rule>
       <RasterSymbolizer>
         <RasterColorizer default-mode="discrete" default-color="transparent" epsilon="0.001">
-          <stop value="1" color="#377eb8" label="Water"/>
+          <!--<stop value="1" color="#377eb8" label="Water"/>
           <stop value="2" color="#999999" label="Developed"/>
           <stop value="3" color="#984ea3" label="Plantation"/>
-          <!--<stop value="4" color="rgb(209,155,255)" label=""/>-->
+          <stop value="4" color="rgb(209,155,255)" label=""/>
           <stop value="5" color="#e41a1c" label="Barren"/>
           <stop value="6" color="#4daf4a" label="Forest"/>
           <stop value="7" color="#ff7f00" label="Grassland"/>
           <stop value="8" color="#ffff33" label="Agriculture"/>
           <stop value="9" color="#f781bf" label="Wetland"/>
-          <stop value="10" color="#a65628" label="Shrubland"/>
+          <stop value="10" color="#a65628" label="Shrubland"/>-->
+          <stop value="1" color="rgb(0,128,255)" label="Water"/>
+          <stop value="2" color="rgb(0,0,0)" label="Developed"/>
+          <stop value="3" color="rgb(255,0,255)" label="Plantation"/>
+          <!--<stop value="4" color="rgb(209,155,255)" label=""/>-->
+          <stop value="5" color="rgb(192,192,192)" label="Barren"/>
+          <stop value="6" color="rgb(0,128,0)" label="Forest"/>
+          <stop value="7" color="rgb(255,255,128)" label="Grassland"/>
+          <stop value="8" color="rgb(255,128,64)" label="Agriculture"/>
+          <stop value="9" color="rgb(128,255,255)" label="Wetland"/>
+          <stop value="10" color="rgb(166,166,0)" label="Shrubland"/>
         </RasterColorizer>
       </RasterSymbolizer>
     </Rule>
