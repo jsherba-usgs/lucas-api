@@ -10,7 +10,6 @@ class QueryForm(forms.Form):
 
     def params(self):
         params = self.cleaned_data if self.is_valid() else {}
-        print(params)
         for k, v in params.items():
             if not v:
                 params.pop(k)
