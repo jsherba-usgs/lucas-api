@@ -10,9 +10,9 @@ def stateclass_paths(sqlite_file):
 	stateclass_paths = query_spatial_files_stateclass(sqlite_file, scenario_id=None, iteration=None, timestep=timestep)
 	return stateclass_paths
 
-def spatialite_conn():
+def spatialite_conn(landcarbondb):
 	#Add paths to app_rasterstore
-	conn = db.connect('/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon.db')
+	conn = db.connect(landcarbondb)
 	c = conn.cursor()
 	return c, conn
 
@@ -89,8 +89,8 @@ def add_to_rasterseries(projectsummary, connection):
 	conn.close()
 	return series_ids
 
-sqlite_file = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon/media/Hawaii_Assessment_Final_GIF/Hawaii LandCarbon Assessment.ssim"
-landcarbondb = r'/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon.db'
+sqlite_file = r"/media/sf_jts_2016_09_01_LandCarbon_CDI/Hawaii_Assessment_Final_GIF/Hawaii LandCarbon Assessment.ssim"
+landcarbondb = r'/home/ubuntu/projects/landcarbon-cdi/landcarbon.db'
 
 projectsummary = summary(sqlite_file)
 
@@ -100,6 +100,6 @@ series_ids = add_to_rasterseries(projectsummary, connection)
 
 stateclass_paths = stateclass_paths(sqlite_file)
 
-connection = spatialite_conn()
+connection = spatialite_conn(landcarbondb)
 
 add_to_rasterstore(connection, stateclass_paths, series_ids=series_ids)
