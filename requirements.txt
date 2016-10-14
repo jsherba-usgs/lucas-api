@@ -8,6 +8,7 @@ djangorestframework==3.3.3
 git+https://github.com/bkg/django-spillway.git@39773dd69e7f2c6c7ddd80f6d620a45ddbeb5ac1#egg=django_spillway
 pylibmc==1.3.0
 pytz==2016.6.1
+pandas==0.18.1
 
 mapnik==0.1
 mapbox-vector-tile==0.2.1
