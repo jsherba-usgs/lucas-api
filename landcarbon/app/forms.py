@@ -16,19 +16,13 @@ class QueryForm(forms.Form):
 
     def params(self):
         params = self.cleaned_data if self.is_valid() else {}
-        print(params)
-        '''for k, v in params.items():
-            if not v:
-                params.pop(k)
-                continue
-            if isinstance(v, list):
-                params[k] = tuple(v)
-            elif not isinstance(v, tuple):
-                params[k] = (v,)'''
+        
         for k, v in params.items():
             if not v:
                 params.pop(k)
                 continue
+            if k=="percentile":
+                params[k] = tuple([v.split(",")[0],int(v.split(",")[1])])
             else:
                 if num_there(v)==True:
                     if "," not in v: 
@@ -42,7 +36,7 @@ class QueryForm(forms.Form):
                     else:
                         params[k] = tuple(v.split(","))
 
-        print(params)
+        
         return params
 
 
