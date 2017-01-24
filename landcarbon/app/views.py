@@ -36,6 +36,7 @@ class QueryFormViewSet(viewsets.ReadOnlyModelViewSet):
 class StateListView(QueryFormViewSet):
     queryset = query.StateClass()
     queryform = forms.StateClassForm
+    print(queryform)
 
 
 class StateLabelView(QueryFormViewSet):

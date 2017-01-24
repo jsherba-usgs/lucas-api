@@ -1,5 +1,5 @@
 import ssim_api.ssim_general_functions as gf
-import ssim_api.ssim_postprocessing_functions as sp
+#import ssim_api.ssim_postprocessing_functions as sp
 import ssim_api.ssim_query_functions as sq
 
 from . import models
@@ -20,26 +20,14 @@ class StateClass(object):
 
     def _do_query(self, params):
         kw = params.copy()
-        print(kw)
-        aggregate = kw.pop('aggregate', None)
-        percentile = kw.pop('percentile', None)
         scenarios = kw.pop('scenario', None)
         if not scenarios:
             return self.all()
         obj = self.model.objects.get(scenario=scenarios[0])
         db = obj.project.ssim.db
+
         self._results = self._query()(db.path, scenario_id=scenarios, **kw)
-        if aggregate:
-        	aggregate_by_columns = aggregate[0].split(",")
-        	column = "Amount"
-        	self._results = sp.aggregate_over(self._results, aggregate_by_columns, column)
-        if percentile:
-        	percentile_params = percentile[0].split(",")
-        	percentile_params[1]=float(percentile_params[1])
-        	percentile_params[2]=float(percentile_params[2])
-        	print(percentile_params)
-        	column = "Amount"
-        	self._results = sp.calculate_percentile(self._results, percentile_params, column)
+        
         return self
 
     def all(self):
@@ -49,6 +37,7 @@ class StateClass(object):
         return self
 
     def filter(self, **kwargs):
+    	
         return self._do_query(kwargs)
 
     def values(self):
