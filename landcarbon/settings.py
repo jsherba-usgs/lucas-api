@@ -86,7 +86,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
     }
 }
-CACHE_MIDDLEWARE_KEY_PREFIX = 'landcarbon.org'''
+CACHE_MIDDLEWARE_KEY_PREFIX = 'landcarbon.org' '''
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'cuc&w+s_^c=9m_4tbu198vf&_0#fvy$6d7i5fn-di=l8_!-1z0'
