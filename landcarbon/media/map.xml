@@ -28,5 +28,110 @@
       </RasterSymbolizer>
     </Rule>
   </Style>
+  <Style name="7171">
+  <Rule>
+    <RasterSymbolizer>
+      <RasterColorizer default-mode="linear" default-color="transparent" epsilon="0.001">
+        <stop color="rgb(224,224,224)" value = "0"/>
+        <stop color="rgb(0,0,255)" value = ".03"/>
+        <stop color="rgb(0,255,255)" value = ".06"      />
+        <stop color="rgb(255,255,0)" value = ".09"      />
+        <stop color="rgb(255,128,0)" value = ".12"     />
+        <stop color="rgb(255,0,0)" value = ".16"     />
+  
+      </RasterColorizer>
+    </RasterSymbolizer>
+  </Rule>
+</Style>
+<Style name="7129">
+  <Rule>
+    <RasterSymbolizer>
+      <RasterColorizer default-mode="linear" default-color="transparent" epsilon="0.001">
+        <stop color="rgb(224,224,224)" value = "0"/>
+        <stop color="rgb(0,0,255)" value = ".1"/>
+        <stop color="rgb(0,255,255)" value = ".2"      />
+        <stop color="rgb(255,255,0)" value = ".3"      />
+        <stop color="rgb(255,128,0)" value = ".4"     />
+        <stop color="rgb(255,0,0)" value = ".5"     />
+  
+      </RasterColorizer>
+    </RasterSymbolizer>
+  </Rule>
+</Style>
+<Style name="7134">
+  <Rule>
+    <RasterSymbolizer>
+      <RasterColorizer default-mode="linear" default-color="transparent" epsilon="0.001">
+        <stop color="rgb(224,224,224)" value = "0"/>
+        <stop color="rgb(0,0,255)" value = ".1"/>
+        <stop color="rgb(0,255,255)" value = ".2"      />
+        <stop color="rgb(255,255,0)" value = ".3"      />
+        <stop color="rgb(255,128,0)" value = ".4"     />
+        <stop color="rgb(255,0,0)" value = ".5"     />
+  
+      </RasterColorizer>
+    </RasterSymbolizer>
+  </Rule>
+</Style>
+<Style name="7141">
+  <Rule>
+    <RasterSymbolizer>
+      <RasterColorizer default-mode="linear" default-color="transparent" epsilon="0.001">
+        <stop color="rgb(224,224,224)" value = "0"/>
+        <stop color="rgb(0,0,255)" value = ".07"/>
+        <stop color="rgb(0,255,255)" value = ".14"      />
+        <stop color="rgb(255,255,0)" value = ".21"      />
+        <stop color="rgb(255,128,0)" value = ".28"     />
+        <stop color="rgb(255,0,0)" value = ".35"     />
+  
+      </RasterColorizer>
+    </RasterSymbolizer>
+  </Rule>
+</Style>
+<Style name="7148">
+  <Rule>
+    <RasterSymbolizer>
+      <RasterColorizer default-mode="linear" default-color="transparent" epsilon="0.001">
+       <stop color="rgb(224,224,224)" value = "0"/>
+        <stop color="rgb(0,0,255)" value = ".07"/>
+        <stop color="rgb(0,255,255)" value = ".14"      />
+        <stop color="rgb(255,255,0)" value = ".21"      />
+        <stop color="rgb(255,128,0)" value = ".28"     />
+        <stop color="rgb(255,0,0)" value = ".35"     />
+  
+      </RasterColorizer>
+    </RasterSymbolizer>
+  </Rule>
+</Style>
+<Style name="7151">
+  <Rule>
+    <RasterSymbolizer>
+      <RasterColorizer default-mode="linear" default-color="transparent" epsilon="0.001">
+        <stop color="rgb(224,224,224)" value = "0"/>
+        <stop color="rgb(0,0,255)" value = ".07"/>
+        <stop color="rgb(0,255,255)" value = ".14"      />
+        <stop color="rgb(255,255,0)" value = ".21"      />
+        <stop color="rgb(255,128,0)" value = ".28"     />
+        <stop color="rgb(255,0,0)" value = ".35"     />
+  
+      </RasterColorizer>
+    </RasterSymbolizer>
+  </Rule>
+</Style>
+<Style name="7158">
+  <Rule>
+    <RasterSymbolizer>
+      <RasterColorizer default-mode="linear" default-color="transparent" epsilon="0.001">
+        <stop color="rgb(224,224,224)" value = "0"/>
+        <stop color="rgb(0,0,255)" value = ".07"/>
+        <stop color="rgb(0,255,255)" value = ".14"      />
+        <stop color="rgb(255,255,0)" value = ".21"      />
+        <stop color="rgb(255,128,0)" value = ".28"     />
+        <stop color="rgb(255,0,0)" value = ".35"     />
+  
+      </RasterColorizer>
+    </RasterSymbolizer>
+  </Rule>
+</Style>
 
 </Map>

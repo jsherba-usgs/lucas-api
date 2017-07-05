@@ -2,9 +2,6 @@ import sqlite3
 import pyspatialite.dbapi2 as db
 from ssim_api.ssim_query_functions import query_spatial_files_stateclass, query_projects, project_summary
 
-scenario_id = (1120,1201,1202,1203)
-iteration = range(1, 11)
-timestep=range(2001,2102)
 
 def stateclass_paths(sqlite_file, scenario_id, iteration, timestep):
 #Collect state_class paths
@@ -18,7 +15,7 @@ def spatialite_conn(landcarbondb):
 	c = conn.cursor()
 	return c, conn
 
-def add_to_rasterstore(connection, stateclass_paths, series_ids=None):
+def add_to_rasterstore(connection, path_to_spatial_files, stateclass_paths, series_ids=None):
 	c = connection[0]
 	conn = connection[1]
 	table_name = 'app_rasterstore'
@@ -38,7 +35,7 @@ def add_to_rasterstore(connection, stateclass_paths, series_ids=None):
 	units = 'NULL'
 	geometry = 'POLYGON((-125.260128026 31.3005985283,-113.749295773 31.3005985283,-113.749295773 43.5754794945,-125.260128026 43.5754794945,-125.260128026 31.3005985283))'
 	id = int(get_max_rasterstore_id(connection)[0][0]) + 1
-	image_path = 'California_Climate_Assessment_ Model_v3.0.37/'
+	image_path = path_to_spatial_files
 
 	for index, row in stateclass_paths.iterrows():
 	    scenario = row['Scenario']
@@ -124,8 +121,15 @@ def add_to_rasterseries(projectsummary, connection, scenario_id):
 
 sqlite_file = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon/media/California_Climate_Assessment_Model_v3.0.37.ssim"
 landcarbondb = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon.db"
+
+project_id = (4008,)
+scenario_id = (1120,1201,1202,1203)
+iteration = range(1, 11)
+timestep=range(2001,2102)
+path_to_spatial_files = 'California_Climate_Assessment_ Model_v3.0.37/'
+
 print("start")
-projectsummary = summary(sqlite_file, project_id=(4008,))
+projectsummary = summary(sqlite_file, project_id=project_id)
 print(projectsummary)
 connection = sqlite_conn(landcarbondb)
 
@@ -135,4 +139,5 @@ stateclass_paths = stateclass_paths(sqlite_file, scenario_id, iteration, timeste
 
 connection = spatialite_conn(landcarbondb)
 
-add_to_rasterstore(connection, stateclass_paths, series_ids=series_ids)
+add_to_rasterstore(connection, path_to_spatial_files, stateclass_paths, series_ids=series_ids)
+print("done")
