@@ -142,7 +142,7 @@ sqlite_file = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon/media/Hawaii
 landcarbondb = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon.db"
 
 project_id = (7096,)
-scenario_id = (6385,)
+scenario_id = (6370,)
 iteration = (0,)
 timestep=range(2012,2062)
 transition_groups = (7129,7134,7141,7148,7151,7158,7171,7182)
