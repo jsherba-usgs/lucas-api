@@ -6,12 +6,14 @@ from . import models
 
 class URLFilterBackend(filters.DjangoFilterBackend):
     """A backend to filter on URL path based kwargs."""
-
+   
     def filter_queryset(self, request, queryset, view):
-
+ 
         filter_class = self.get_filter_class(view, queryset)
+
         if filter_class:
             return filter_class(view.kwargs, queryset=queryset).qs
+            
         return queryset
 
 
@@ -22,6 +24,8 @@ class RasterStoreFilterSet(django_filters.FilterSet):
     class Meta:
         model = models.RasterStore
         fields = ('series__slug', 'begin', 'end')
+
+
 
 
 class RasterSeriesFilterSet(django_filters.FilterSet):

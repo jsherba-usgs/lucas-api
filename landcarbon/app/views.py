@@ -1,4 +1,7 @@
 from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.settings import api_settings
+from rest_framework_csv import renderers as r
 from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from spillway import carto, renderers
@@ -35,6 +38,7 @@ class QueryFormViewSet(viewsets.ReadOnlyModelViewSet):
 
 class StateListView(QueryFormViewSet):
     queryset = query.StateClass()
+    renderer_classes = [r.CSVRenderer, ] + api_settings.DEFAULT_RENDERER_CLASSES
     queryform = forms.StateClassForm
 
 
@@ -74,11 +78,15 @@ class RasterStoreViewSet(ReadOnlyRasterModelViewSet):
     serializer_class = serializers.RasterStoreSerializer
     renderer_classes = (ReadOnlyRasterModelViewSet.renderer_classes +
                         (CSVRenderer,))
+   
     filter_backends = (filters.URLFilterBackend,)
+    #filter_backends = (DjangoFilterBackend,)
+    #filter_class = ("iteration",)#
     filter_class = filters.RasterStoreFilterSet
     lookup_field = 'slug'
 
     def get_serializer(self, *args, **kwargs):
+
         renderer = self.request.accepted_renderer
         if isinstance(renderer, CSVRenderer):
             self.serializer_class = serializers.RasterCSVSerializer

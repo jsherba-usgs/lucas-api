@@ -54,6 +54,7 @@ class RasterStore(AbstractRasterStore):
     units = models.CharField(choices=unit_choices, max_length=12,
                              blank=True, null=True)
     iteration = models.IntegerField(blank=True, null=True)
+    scenarioval = models.IntegerField(blank=True, null=True)
     objects = RasterQuerySet.as_manager()
 
     def __unicode__(self):
