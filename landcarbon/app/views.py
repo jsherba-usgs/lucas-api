@@ -1,7 +1,9 @@
 from django.http import Http404
+from rest_framework.renderers import JSONRenderer
+from rest_framework.renderers import BrowsableAPIRenderer
 from rest_framework.views import APIView
 from rest_framework.settings import api_settings
-from rest_framework_csv import renderers as r
+#from rest_framework_csv import renderers as r
 from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from spillway import carto, renderers
@@ -10,7 +12,7 @@ from spillway.views import MapView, TileView
 from spillway.viewsets import ReadOnlyGeoModelViewSet, ReadOnlyRasterModelViewSet
 
 from . import forms, filters, models, pagination, query, serializers
-from .renderers import CSVRenderer, PBFRenderer
+from .renderers import CSVRenderer, PaginatedCSVRenderer, PBFRenderer
 
 ReadOnlyGeoModelViewSet.pagination_class = pagination.FeaturePagination
 
@@ -38,8 +40,10 @@ class QueryFormViewSet(viewsets.ReadOnlyModelViewSet):
 
 class StateListView(QueryFormViewSet):
     queryset = query.StateClass()
-    renderer_classes = [r.CSVRenderer, ] + api_settings.DEFAULT_RENDERER_CLASSES
+    renderer_classes = (BrowsableAPIRenderer,JSONRenderer, PaginatedCSVRenderer)
     queryform = forms.StateClassForm
+
+    
 
 
 class StateLabelView(QueryFormViewSet):
@@ -49,6 +53,7 @@ class StateLabelView(QueryFormViewSet):
 
 class TransitionListView(QueryFormViewSet):
     queryset = query.TransitionGroup()
+    renderer_classes = (BrowsableAPIRenderer,JSONRenderer, PaginatedCSVRenderer)
     queryform = forms.TransitionGroupForm
 
 
@@ -58,6 +63,7 @@ class TransitionGroupView(QueryFormViewSet):
 
 class StockTypeView(QueryFormViewSet):
     queryset = query.StockType()
+    renderer_classes = (BrowsableAPIRenderer,JSONRenderer, PaginatedCSVRenderer)
     queryform = forms.StockTypeForm
 
 class StockTypeListView(QueryFormViewSet):

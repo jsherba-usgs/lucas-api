@@ -24,6 +24,14 @@ class CSVRenderer(BaseRenderer):
         fp.seek(0)
         return fp
 
+class PaginatedCSVRenderer (CSVRenderer):
+    results_field = 'results'
+
+    def render(self, data, *args, **kwargs):
+        if not isinstance(data, list):
+            data = data.get(self.results_field, [])
+        return super(PaginatedCSVRenderer, self).render(data, *args, **kwargs)
+
 
 # According to the spec, file extension SHOULD be mvt and mime SHOULD be
 # application/vnd.mapbox-vector-tile though mapbox uses .vector.pbf for their
