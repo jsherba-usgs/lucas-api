@@ -43,10 +43,12 @@ class PBFRenderer(BaseRenderer):
     format = 'pbf'
     charset = None
     render_style = 'binary'
-
+    
+      
     def render(self, data, accepted_media_type=None, renderer_context=None):
         layers = [{'name': k, 'features': v['features']}
                   for k, v in data.items()]
+        print("testtest")          
                   # for k, v in data.iteritems()]
         # TODO: Use wkb instead of wkt. Better yet, avoid extra roundtrip with
         # shapely geom serialization.

@@ -1,6 +1,8 @@
 from django.conf.urls import url, include
 from rest_framework import routers
-
+from spillway import generics
+from spillway import views
+from .models import Location
 from . import views
 
 router = routers.DefaultRouter()
@@ -26,4 +28,12 @@ urlpatterns = [
         views.RasterMapView.as_view(), name='raster-tiles'),
     url(r'^vtiles/(?P<layers>[\w,]+)/%s' % _tile,
         views.TileLayersView.as_view(), name='vectorlayer-tiles'),
+    url(r'^api.locations/(?P<slug>[\w-]+)/$',
+        generics.GeoDetailView.as_view(queryset=Location.objects.all(), lookup_field='slug'),
+        name='location'),
+    url(r'^api/locations/$',
+        generics.GeoListView.as_view(queryset=Location.objects.all()),
+        name='location-list'),
+
+
 ]

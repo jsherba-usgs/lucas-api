@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from spillway import carto, renderers
 from spillway.forms import VectorTileForm
 from spillway.views import MapView, TileView
-from spillway.viewsets import ReadOnlyGeoModelViewSet, ReadOnlyRasterModelViewSet
+from spillway.viewsets import ReadOnlyGeoModelViewSet, ReadOnlyRasterModelViewSet, GenericGeoViewSet
 
 from . import forms, filters, models, pagination, query, serializers
 from .renderers import CSVRenderer, PaginatedCSVRenderer, PBFRenderer
@@ -104,31 +104,37 @@ class RasterMapView(MapView):
     lookup_field = 'slug'
 
 
+
 class TileLayersView(TileView):
     renderer_classes = (renderers.MapnikRenderer,
                         renderers.GeoJSONRenderer,
                         PBFRenderer)
 
-    def get(self, request, layers=None, *args, **kwargs):
-        layers = layers.split(',')
-        views = filter(None, map(layerviews.get, layers))
-        if not views:
-            raise Http404('Layer does not exist')
-        if not isinstance(request.accepted_renderer, renderers.MapnikRenderer):
-            return Response(self.serialize_layers(views))
-        form = VectorTileForm(dict(self.request.query_params.dict(),
-                                   **self.kwargs))
-        querysets = [v.queryset for v in views]
-        m = carto.build_map(querysets, form)
-        return Response(m.render(request.accepted_renderer.format))
+    
+    queryset = models.Location.objects.all()
+    #lookup_field = 'slug'
+    # def get(self, request, layers=None, *args, **kwargs):
 
-    def serialize_layers(self, views):
-        layers = {}
-        for viewset in views:
-            view = TileView(request=self.request, args=self.args,
-                            kwargs=self.kwargs, queryset=viewset.queryset)
-            view.format_kwarg = self.format_kwarg
-            qs = view.filter_queryset(view.get_queryset())
-            serializer = view.get_serializer(qs, many=True)
-            layers[serializer.instance.model._meta.model_name] = serializer.data
-        return layers
+    #     layers = layers.split(',')
+    #     print(layers)
+    #     views = filter(None, map(layerviews.get, layers))
+    #     if not views:
+    #         raise Http404('Layer does not exist')
+    #     if not isinstance(request.accepted_renderer, renderers.MapnikRenderer):
+    #         return Response(self.serialize_layers(views))
+    #     form = VectorTileForm(dict(self.request.query_params.dict(),
+    #                                **self.kwargs))
+    #     querysets = [v.queryset for v in views]
+    #     m = carto.build_map(querysets, form)
+    #     return Response(m.render(request.accepted_renderer.format))
+
+    # def serialize_layers(self, views):
+    #     layers = {}
+    #     for viewset in views:
+    #         view = TileView(request=self.request, args=self.args,
+    #                         kwargs=self.kwargs, queryset=viewset.queryset)
+    #         view.format_kwarg = self.format_kwarg
+    #         qs = view.filter_queryset(view.get_queryset())
+    #         serializer = view.get_serializer(qs, many=True)
+    #         layers[serializer.instance.model._meta.model_name] = serializer.data
+    #     return layers

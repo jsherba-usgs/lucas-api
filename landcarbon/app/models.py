@@ -150,3 +150,11 @@ class Scenario(models.Model):
 
     def __unicode__(self):
         return unicode(self.scenario)
+
+class Location(models.Model):
+    layers =  models.TextField(db_column='layers', blank=True, null=True)
+    slug = models.SlugField()
+    geom = models.GeometryField()
+
+    objects = GeoQuerySet.as_manager()
+   
