@@ -1,7 +1,30 @@
 import sqlite3
 import pyspatialite.dbapi2 as db
 from ssim_api.ssim_query_functions import query_spatial_files_stateclass, query_projects, project_summary
+from osgeo import osr, gdal, ogr
 
+def update_albers_proj(path):
+	print(path)
+	rootpath = '/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon/media/'
+	tifpath = rootpath+path
+	gtif = gdal.Open(tifpath, gdal.GA_Update)
+	source_proj = gtif.GetProjectionRef()
+
+	print (source_proj)
+
+	target_proj = source_proj.replace('"Albers"', '"Albers_Conic_Equal_Area"')
+
+	print (target_proj)
+
+	targetSR = osr.SpatialReference()
+
+	targetSR.ImportFromWkt(target_proj)
+
+	gtif.SetProjection(targetSR.ExportToWkt())
+
+	print(gtif.GetProjectionRef())
+	gtif.FlushCache()
+	gtif = None
 
 def stateclass_paths(sqlite_file, scenario_id, iteration, timestep):
 #Collect state_class paths
@@ -38,21 +61,22 @@ def add_to_rasterstore(connection, path_to_spatial_files, stateclass_paths, seri
 	image_path = path_to_spatial_files
 
 	for index, row in stateclass_paths.iterrows():
-	    scenario = row['Scenario']
-	    iteration_str = row['Iteration']
-	    iteration = str(iteration_str)
-	    timestep = row['Timestep']
-	    event = str(timestep)+'-01-01'
-	    image = image_path+row['Path']
-	    slug = 's'+str(scenario)+'-it'+iteration_str+'-ts'+timestep+'-sc'
-	    if series_ids:
-	    	series_id = series_ids[scenario][iteration_str]
-	    else:
-	    	series_id = 'Null'
-	    print(scenario, iteration, event, image,slug)
-	    c.execute("INSERT INTO `app_rasterstore` (`id`,`image`,`width`,`height`,`event`,`srs`,`minval`,`maxval`,`nodata`,`xpixsize`,`ypixsize`,`name`,`slug`,`units`,`series_id`,`iteration`,geom) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,GeomFromText(?,4326))", (id, image, width, height, event, srs, minval, maxval, nodata, xpixsize, ypixsize, name, slug, units, series_id, iteration, geometry))
-	    conn.commit()
-	    id +=1
+		scenario = row['Scenario']
+		iteration_str = row['Iteration']
+		iteration = str(iteration_str)
+		timestep = row['Timestep']
+		event = str(timestep)+'-01-01'
+		image = image_path+row['Path']
+		update_albers_proj(image)
+		slug = 's'+str(scenario)+'-it'+iteration_str+'-ts'+timestep+'-sc'
+		if series_ids:
+			series_id = series_ids[scenario][iteration_str]
+		else:
+			series_id = 'Null'
+		print(scenario, iteration, event, image,slug)
+		c.execute("INSERT INTO `app_rasterstore` (`id`,`image`,`width`,`height`,`event`,`srs`,`minval`,`maxval`,`nodata`,`xpixsize`,`ypixsize`,`name`,`slug`,`units`,`series_id`,`iteration`,geom) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,GeomFromText(?,4326))", (id, image, width, height, event, srs, minval, maxval, nodata, xpixsize, ypixsize, name, slug, units, series_id, iteration, geometry))
+		conn.commit()
+		id +=1
 	conn.close()
 
 def summary(sqlite_file, project_id = None):
