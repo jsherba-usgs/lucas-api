@@ -107,7 +107,8 @@ class RasterMapView(MapView):
 
 class TileLayersView(TileView):
     renderer_classes = (renderers.MapnikRenderer,
-                        renderers.GeoJSONRenderer)
+                        renderers.GeoJSONRenderer,
+                        PBFRenderer)
     
     queryset = models.Location.objects.all()    
     def get_queryset(self):

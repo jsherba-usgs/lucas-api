@@ -34,7 +34,8 @@ def add_to_rasterstore(connection, json_file_in, layer_name):
 
 	for features in data["features"]:
 
-		properties = features["properties"]["name"]
+		#properties = features["properties"]["name"]
+		properties = features["properties"]["Name"]
 		#properties = features["properties"]["GRIDCODE"]
 
 		coordinates = features["geometry"]["coordinates"]
@@ -47,9 +48,11 @@ def add_to_rasterstore(connection, json_file_in, layer_name):
 
 
 		layers = layer_name
+		#slug = properties.split(" County")[0]
 		slug = properties
+		label = properties
 
-		c.execute("INSERT INTO `app_location` (`id`,`layers`,`slug`,geom) VALUES (?,?,?,GeomFromGeoJSON(?))", (id, layers, slug, polygons))
+		c.execute("INSERT INTO `app_location` (`id`,`layers`,`slug`,`label`,geom) VALUES (?,?,?,?,GeomFromGeoJSON(?))", (id, layers, slug, label, polygons))
 		#c.execute("INSERT INTO `app_location` (`id`,`layers`,`slug`,geom) VALUES (?,?,?,GeomFromText(?,4326))", (number, layers, slug, geometry))
 		conn.commit()
 		id+=1
