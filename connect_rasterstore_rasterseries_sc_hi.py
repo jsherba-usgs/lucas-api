@@ -125,7 +125,7 @@ landcarbondb = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon.db"
 project_id = (7096,)
 scenario_id = (6370,6385)
 iteration = range(1, 11)
-timestep=range(2012,2062)
+timestep=range(2011,2062)
 #transition_groups = (7129,7134,7141,7148,7151,7158,7171,7182)
 
 path_to_spatial_files = 'Hawaii_Assessment_Final_GIF/'

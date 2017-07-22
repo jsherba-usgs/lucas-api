@@ -37,17 +37,17 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE_CLASSES = [
-    'django.middleware.cache.UpdateCacheMiddleware',
+   # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    #'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    #'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True   
@@ -79,15 +79,26 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-'''CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
-        #'LOCATION': '/var/run/memcached/memcached.sock',
-        'LOCATION': '127.0.0.1:11211',
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+#         #'LOCATION': '/var/run/memcached/memcached.sock',
+#         'LOCATION': '127.0.0.1:11211',
 
-    }
-}'''
-#CACHE_MIDDLEWARE_KEY_PREFIX = 'landcarbon.org' 
+#     }
+# }
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+#         'LOCATION': '/var/tmp/django_cache',
+#         'TIMEOUT': None,
+#         'OPTIONS': {
+#             'MAX_ENTRIES': 1000000000
+#         }
+#     }
+# }
+CACHE_MIDDLEWARE_KEY_PREFIX = ''#'landcarbon.org' 
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'cuc&w+s_^c=9m_4tbu198vf&_0#fvy$6d7i5fn-di=l8_!-1z0'

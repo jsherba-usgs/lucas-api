@@ -1,4 +1,5 @@
 from django.conf.urls import url, include
+from django.views.decorators.cache import cache_page
 from rest_framework import routers
 from spillway import generics
 from spillway import views
@@ -24,8 +25,11 @@ urlpatterns = [
         views.RasterStoreViewSet.as_view({'get': 'list'}),
         name='rasterstore-series-list'),
 
+    #url(r'^tiles/(?P<slug>[\w-]+)/%s' % _tile,
+    #    views.RasterMapView.as_view(), name='raster-tiles'),
     url(r'^tiles/(?P<slug>[\w-]+)/%s' % _tile,
-        views.RasterMapView.as_view(), name='raster-tiles'),
+         view = cache_page(None)(views.RasterMapView.as_view()),
+         name='raster-tiles'),
     url(r'^vtiles/(?P<layers>[\w,]+)/%s' % _tile,
         views.TileLayersView.as_view(), name='vectorlayer-tiles'),
     #url(r'^vtiles/?P<layers>[\w,]+)/%s' % _tile,
