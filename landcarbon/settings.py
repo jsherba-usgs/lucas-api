@@ -88,16 +88,16 @@ AUTH_PASSWORD_VALIDATORS = [
 #     }
 # }
 
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-#         'LOCATION': '/var/tmp/django_cache',
-#         'TIMEOUT': None,
-#         'OPTIONS': {
-#             'MAX_ENTRIES': 1000000000
-#         }
-#     }
-# }
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+        'TIMEOUT': None,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000000000
+        }
+    }
+}
 CACHE_MIDDLEWARE_KEY_PREFIX = ''#'landcarbon.org' 
 
 # SECURITY WARNING: keep the secret key used in production secret!
