@@ -13,6 +13,7 @@ ALLOWED_HOSTS = ['52.9.202.136', '.landcarbon.org']
 
 # SpatiaLite 4.3 path not found unless explicitly set.
 SPATIALITE_LIBRARY_PATH = '/usr/lib/x86_64-linux-gnu/mod_spatialite.so'
+#SPATIALITE_LIBRARY_PATH = '/usr/lib/x86_64-linux-gnu/libspatialite.so'
 
 DATABASES = {
     'default': {
@@ -119,7 +120,7 @@ MEDIA_ROOT = os.path.join(BASEDIR, 'media/')
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
-
+#MEDIA_URL = '/apps/lucas/lucas-api/media/'
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
@@ -129,7 +130,7 @@ STATIC_ROOT = os.path.join(BASEDIR, 'static', 'public')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_URL = '/static/'
-
+#STATIC_URL = '/apps/lucas/lucas-api/static/'
 # Additional locations of static files
 # STATICFILES_DIRS = (
     # path.join(PROJECT_ROOT, 'static', 'app'),

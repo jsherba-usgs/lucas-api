@@ -89,12 +89,15 @@ $(dir $(fixtures)): $(fixtures)
 	python manage.py loaddata $(filter $@%, $^)
 	@touch $@
 
-migrate-%:
+migrate:
 	@install -d logs
 	python manage.py migrate $*
+#migrate-%:
+#	@install -d logs
+#	python manage.py migrate $*
 
 # Run migrations for all defined apps
-migrate: $(addprefix migrate-, $(notdir $(appdirs))) $(dir $(fixtures))
+#migrate: $(addprefix migrate-, $(notdir $(appdirs))) $(dir $(fixtures))
 
 collectstatic:
 	-@[ -d $(staticdir)/public ] && rm -r $(staticdir)/public

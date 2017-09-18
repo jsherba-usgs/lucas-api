@@ -16,11 +16,13 @@ mapnik==0.1
 mapbox-vector-tile==0.2.1
 # Must be built prior to GDAL
 numpy==1.11.0
-GDAL==1.11.2
+#GDAL==1.11.2
+GDAL==1.10.0
 #greenwich==0.6.1
 git+https://github.com/bkg/greenwich.git@ac7b02308d6527e8bd1c174b53e37f55ad59db60#egg=greenwich
-
 Fabric==1.12.0
+gunicorn==19.7.1
+
 
 # SSIM API
 https://github.com/usgs/ssim-api/archive/v0.0.5.tar.gz
