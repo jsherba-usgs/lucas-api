@@ -1,12 +1,12 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'start' ]
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'run', 'build' ]
 2 info using npm@3.5.2
 3 info using node@v4.2.6
 4 verbose stack Error: ENOENT: no such file or directory, open '/home/jsherba-pr/Projects/landcarbon-cdi/package.json'
 4 verbose stack     at Error (native)
 5 verbose cwd /home/jsherba-pr/Projects/landcarbon-cdi
-6 error Linux 4.4.0-83-generic
-7 error argv "/usr/bin/nodejs" "/usr/bin/npm" "start"
+6 error Linux 4.4.0-93-generic
+7 error argv "/usr/bin/nodejs" "/usr/bin/npm" "run" "build"
 8 error node v4.2.6
 9 error npm  v3.5.2
 10 error path /home/jsherba-pr/Projects/landcarbon-cdi/package.json
