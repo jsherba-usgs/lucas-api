@@ -15,7 +15,7 @@ def spatialite_conn(landcarbondb):
 	c = conn.cursor()
 	return c, conn
 
-def add_to_rasterstore(connection, path_to_spatial_files, stateclass_paths, series_ids=None):
+def add_to_rasterstore(connection, path_to_spatial_files, stateclass_paths, empty_dic, series_ids=None):
 	c = connection[0]
 	conn = connection[1]
 	table_name = 'app_rasterstore'
@@ -34,7 +34,10 @@ def add_to_rasterstore(connection, path_to_spatial_files, stateclass_paths, seri
 	name = 'NULL'
 	units = 'NULL'
 	geometry = 'POLYGON((-125.260128026 31.3005985283,-113.749295773 31.3005985283,-113.749295773 43.5754794945,-125.260128026 43.5754794945,-125.260128026 31.3005985283))'
-	id = int(get_max_rasterstore_id(connection)[0][0]) + 1
+	if empty_dic==False:
+		id = int(get_max_rasterseries_id(connection)[0][0]) + 1
+	else:
+		id = 0
 	image_path = path_to_spatial_files
 
 	for index, row in stateclass_paths.iterrows():
@@ -91,11 +94,14 @@ def get_max_rasterstore_id(connection):
 	
 	return max_id
 
-def add_to_rasterseries(projectsummary, connection, scenario_id):
+def add_to_rasterseries(projectsummary, connection, scenario_id, empty_dic):
 	c = connection[0]
 	conn = connection[1]
 	table_name = 'app_rasterseries'
-	id = int(get_max_rasterseries_id(connection)[0][0]) + 1
+	if empty_dic==False:
+		id = int(get_max_rasterseries_id(connection)[0][0]) + 1
+	else:
+		id = 0
 	print(id)
 	series_ids = {}
 
@@ -119,8 +125,8 @@ def add_to_rasterseries(projectsummary, connection, scenario_id):
 	conn.close()
 	return series_ids
 
-sqlite_file = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon/media/Hawaii_LandCarbon_Assessment.ssim"
-landcarbondb = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon.db"
+sqlite_file = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon/media/Hawaii_LandCarbon_Assessment.ssim"
+landcarbondb = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon.db"
 
 project_id = (7096,)
 scenario_id = (6370,6385)
@@ -129,17 +135,17 @@ timestep=range(2011,2062)
 #transition_groups = (7129,7134,7141,7148,7151,7158,7171,7182)
 
 path_to_spatial_files = 'Hawaii_Assessment_Final_GIF/'
-
+empty_dic = True
 print("start")
 projectsummary = summary(sqlite_file, project_id=project_id)
 print(projectsummary)
 connection = sqlite_conn(landcarbondb)
 
-series_ids = add_to_rasterseries(projectsummary, connection, scenario_id)
+series_ids = add_to_rasterseries(projectsummary, connection, scenario_id, empty_dic)
 
 stateclass_paths = stateclass_paths(sqlite_file, scenario_id, iteration, timestep)
 
 connection = spatialite_conn(landcarbondb)
 
-add_to_rasterstore(connection, path_to_spatial_files, stateclass_paths, series_ids=series_ids)
+add_to_rasterstore(connection, path_to_spatial_files, stateclass_paths, empty_dic, series_ids=series_ids)
 print("done")

@@ -25,4 +25,4 @@ gunicorn==19.7.1
 
 
 # SSIM API
-https://github.com/usgs/ssim-api/archive/v0.0.5.tar.gz
+https://github.com/usgs/ssim-api/archive/v0.0.9.tar.gz

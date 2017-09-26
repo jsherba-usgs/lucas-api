@@ -59,8 +59,8 @@ def add_to_rasterstore(connection, json_file_in, layer_name):
 	conn.close()
 
 
-json_file_in = r"/home/ubuntu/projects/lucas-api/landcarbon/media/location/hi_moisture_zones2.json"
-landcarbondb = r"/home/ubuntu/projects/lucas-api/landcarbon.db"
+json_file_in = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon/media/location/hi_moisture_zones2.json"
+landcarbondb = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon.db"
 layer_name = 'hi_moisture_zones2'
 
 connection = spatialite_conn(landcarbondb)

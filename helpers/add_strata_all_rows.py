@@ -8,7 +8,7 @@ from ssim_api.ssim_query_functions import db_query_stateclass, db_query_transiti
 ## To do add stratum and secondary stratum id and name programatically to strata and secondary strata tables.
 
 # define .ssim connection
-sqlite_file = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon/media/Hawaii_LandCarbon_Assessment.ssim"
+sqlite_file = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon/media/Hawaii_LandCarbon_Assessment.ssim"
 
 
 # define query vals
@@ -18,6 +18,8 @@ group_by_dic = {"stateclass": [("IDScenario", "Timestep","Iteration", "StateLabe
                 "stock":[("IDScenario", "Timestep","StockType", "Iteration", "StateClass", "Stratum"), ("IDScenario", "Timestep","StockType", "Iteration","StateClass", "SecondaryStratum"), ("IDScenario", "Timestep","StockType", "Iteration","StateClass")],
                 "transition":[("IDScenario", "Timestep","Iteration", "TransitionGroup", "Stratum", "AgeMin", "AgeMax"),("IDScenario", "Timestep","Iteration", "TransitionGroup", "SecondaryStratum", "AgeMin", "AgeMax"), ("IDScenario", "Timestep","Iteration", "TransitionGroup","AgeMin", "AgeMax")]}
 
+stratum_in = ('Dry','Mesic','Wet')
+secondary_stratum_in = ("Hawai'i","Kaho'olawe","Kaua'i","Lana'i","Maui","Moloka'i","Ni'ihau","O'ahu")
 
 summary = project_summary(sqlite_file, project=project_id)
 stateclasstable= summary[7]
@@ -26,8 +28,6 @@ stratatable  = summary[5]
 secondary_stratatable= summary[6]
 transition_groupstable= summary[3]
 stocks_groupstable= summary[4]
-print(summary)
-
 stateclasstable = stateclasstable.set_index('Name').to_dict()
 statelabeltable = statelabeltable.set_index('Name').to_dict()
 stratatable = stratatable.set_index('Name').to_dict()
@@ -35,16 +35,16 @@ secondary_stratatable = secondary_stratatable.set_index('Name').to_dict()
 transition_groupstable = transition_groupstable.set_index('Name').to_dict()
 stocks_groupstable= stocks_groupstable.set_index('Name').to_dict()
 
-print(transition_groupstable)
-print(stocks_groupstable)
-print(stateclasstable)
+#print(transition_groupstable)
+#print(stocks_groupstable)
+#print(stateclasstable)
+#sys.exit("test")
 
-
-def add_strata_all_stateclass(table_type, table_name_dic, group_by_dic):
+def add_strata_all_stateclass(table_type, table_name_dic, group_by_dic, stratum,secondary_stratum):
 
     group_by = group_by_dic[table_type][0]
 
-    df = db_query_stateclass(sqlite_file, project_id=project_id, scenario_id = None, state_label_x=None, iteration=None, stratum=None, secondary_stratum=None, group_by=group_by, percentile = None)
+    df = db_query_stateclass(sqlite_file, project_id=project_id, scenario_id = None, state_label_x=None, iteration=None, stratum=stratum_in, secondary_stratum=secondary_stratum_in, group_by=group_by, percentile = None)
     print('query_done')
 
     conn = sqlite3.connect(sqlite_file)
@@ -76,7 +76,7 @@ def add_strata_all_stateclass(table_type, table_name_dic, group_by_dic):
 
     group_by =  group_by_dic[table_type][1]
 
-    df = db_query_stateclass(sqlite_file, project_id=project_id, scenario_id = None, state_label_x=None, iteration=None, stratum=None, secondary_stratum=None, group_by=group_by, percentile = None)
+    df = db_query_stateclass(sqlite_file, project_id=project_id, scenario_id = None, state_label_x=None, iteration=None, stratum=stratum_in, secondary_stratum=secondary_stratum_in, group_by=group_by, percentile = None)
     print('query_done')
 
 
@@ -109,7 +109,7 @@ def add_strata_all_stateclass(table_type, table_name_dic, group_by_dic):
 
     group_by = group_by_dic[table_type][2]
 
-    df = db_query_stateclass(sqlite_file, project_id=project_id, scenario_id = None, state_label_x=None, iteration=None, stratum=None, secondary_stratum=None, group_by=group_by, percentile = None)
+    df = db_query_stateclass(sqlite_file, project_id=project_id, scenario_id = None, state_label_x=None, iteration=None, stratum=stratum_in, secondary_stratum=secondary_stratum_in, group_by=group_by, percentile = None)
     print('query_done')
 
 
@@ -140,11 +140,11 @@ def add_strata_all_stateclass(table_type, table_name_dic, group_by_dic):
 
     print("alldone")
 
-def add_strata_all_stock(table_type, table_name_dic, group_by_dic):
+def add_strata_all_stock(table_type, table_name_dic, group_by_dic, stratum_in, secondary_stratum_in):
 
     group_by = group_by_dic[table_type][0]
 
-    df = db_query_stock(sqlite_file, project_id=project_id, scenario_id = None, iteration=None, stratum=None, secondary_stratum=None, group_by=group_by, percentile = None)
+    df = db_query_stock(sqlite_file, project_id=project_id, scenario_id = None, iteration=None, stratum=stratum_in, secondary_stratum=secondary_stratum_in, group_by=group_by, percentile = None)
     print('query_done')
     print(df.head())
     conn = sqlite3.connect(sqlite_file)
@@ -173,7 +173,7 @@ def add_strata_all_stock(table_type, table_name_dic, group_by_dic):
 
     group_by = group_by_dic[table_type][1]
 
-    df =  db_query_stock(sqlite_file, project_id=project_id, scenario_id = None, iteration=None, stratum=None, secondary_stratum=None, group_by=group_by, percentile = None)
+    df =  db_query_stock(sqlite_file, project_id=project_id, scenario_id = None, iteration=None, stratum=stratum_in, secondary_stratum=secondary_stratum_in, group_by=group_by, percentile = None)
     print('query_done')
 
 
@@ -203,7 +203,7 @@ def add_strata_all_stock(table_type, table_name_dic, group_by_dic):
 
     group_by = group_by_dic[table_type][2]
 
-    df = db_query_stock(sqlite_file, project_id=project_id, scenario_id = None, iteration=None, stratum=None, secondary_stratum=None, group_by=group_by, percentile = None)
+    df = db_query_stock(sqlite_file, project_id=project_id, scenario_id = None, iteration=None, stratum=stratum_in, secondary_stratum=secondary_stratum_in, group_by=group_by, percentile = None)
     print('query_done')
 
 
@@ -232,11 +232,11 @@ def add_strata_all_stock(table_type, table_name_dic, group_by_dic):
 
     print("alldone")
 
-def add_strata_all_transition(table_type, table_name_dic, group_by_dic):
+def add_strata_all_transition(table_type, table_name_dic, group_by_dic,stratum_in, secondary_stratum_in):
 
     group_by = group_by_dic[table_type][0]
 
-    df = db_query_transitiongroup(sqlite_file, project_id=project_id, scenario_id = None, iteration=None, stratum=None, secondary_stratum=None, group_by= group_by, percentile = None)
+    df = db_query_transitiongroup(sqlite_file, project_id=project_id, scenario_id = None, iteration=None, stratum=stratum_in, secondary_stratum=secondary_stratum_in, group_by= group_by, percentile = None)
     print('query_done')
 
     conn = sqlite3.connect(sqlite_file)
@@ -267,7 +267,7 @@ def add_strata_all_transition(table_type, table_name_dic, group_by_dic):
 
     group_by = group_by_dic[table_type][1]
 
-    df = db_query_transitiongroup(sqlite_file, project_id=project_id, scenario_id = None, iteration=None, stratum=None, secondary_stratum=None, group_by= group_by, percentile = None)
+    df = db_query_transitiongroup(sqlite_file, project_id=project_id, scenario_id = None, iteration=None, stratum=stratum_in, secondary_stratum=secondary_stratum_in, group_by= group_by, percentile = None)
     print('query_done')
 
 
@@ -300,7 +300,7 @@ def add_strata_all_transition(table_type, table_name_dic, group_by_dic):
 
     group_by = group_by_dic[table_type][2]
 
-    df = db_query_transitiongroup(sqlite_file, project_id=project_id, scenario_id=None, iteration=None, stratum=None, secondary_stratum=None, group_by=group_by, percentile=None)
+    df = db_query_transitiongroup(sqlite_file, project_id=project_id, scenario_id=None, iteration=None, stratum=stratum_in, secondary_stratum=secondary_stratum_in, group_by=group_by, percentile=None)
     print('query_done')
 
 
@@ -334,10 +334,10 @@ def add_strata_all_transition(table_type, table_name_dic, group_by_dic):
     print("alldone")
 
 #table_type = "stateclass" #stock transition
-#add_strata_all_stateclass(table_type, table_name_dic, group_by_dic)
+#add_strata_all_stateclass(table_type, table_name_dic, group_by_dic,stratum_in, secondary_stratum_in)
 
-#table_type = "stock"
-#add_strata_all_stock(table_type, table_name_dic, group_by_dic)
+table_type = "stock"
+add_strata_all_stock(table_type, table_name_dic, group_by_dic, stratum_in, secondary_stratum_in)
 
-table_type = "transition"
-add_strata_all_transition(table_type, table_name_dic, group_by_dic)
+#table_type = "transition"
+#add_strata_all_transition(table_type, table_name_dic, group_by_dic, stratum_in, secondary_stratum_in)
