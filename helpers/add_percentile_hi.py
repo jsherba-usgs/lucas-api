@@ -126,16 +126,16 @@ def add_strata_all_transition(table_type, table_name_dic, group_by_dic):
         for index, row in df.iterrows():
             transtition =  transition_groupstable['TransitionGroupID'][str(row.TransitionGroup)]
             scenario = int(row.IDScenario)
-            #iteration = 1000+p
-            iteration = 1050
+            iteration = 1000+p
+            #iteration = 1050
             timestep= int(row.Timestep)
             stratum = int(stratatable['StratumID'][row.Stratum])
             secstratum = int(secondary_stratatable['SecondaryStratumID'][row.SecondaryStratum])
             agemin = 0
             agemax = 0
             ageclass ="NULL"
-            #amount = float(row['pc(sum, '+str(p)+')'])
-            amount = float(row['pc(sum, 50)'])
+            amount = float(row['pc(sum, '+str(p)+')'])
+            #amount = float(row['pc(sum, 50)'])
             try:
                 c.execute("INSERT INTO {tn} VALUES ({col1}, {col2}, {col3}, {col4}, {col5}, {col6}, {col7}, {col8}, {col9}, {col10})". \
                           format(tn=table_name_dic[table_type], col1=scenario, col2= iteration, col3 = timestep, col4 = stratum, col5 =secstratum, col6=transtition, col7 = agemin, col8=agemax, col9=ageclass, col10=amount))
@@ -152,8 +152,8 @@ def add_strata_all_transition(table_type, table_name_dic, group_by_dic):
 #table_type = "stateclass" #stock transition
 #add_percentile_stateclass(table_type, table_name_dic, group_by_dic)
 
-table_type = "stock"
-add_strata_all_stock(table_type, table_name_dic, group_by_dic)
+#table_type = "stock"
+#add_strata_all_stock(table_type, table_name_dic, group_by_dic)
 
-#table_type = "transition"
-#add_strata_all_transition(table_type, table_name_dic, group_by_dic)
+table_type = "transition"
+add_strata_all_transition(table_type, table_name_dic, group_by_dic)
