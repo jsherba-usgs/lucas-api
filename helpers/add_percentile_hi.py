@@ -15,7 +15,7 @@ sqlite_file = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon/media/Hawaii_Lan
 project_id = (7096,)
 table_name_dic = {"stateclass":"STSim_OutputStratumState", "stock": "SF_OutputStock", "transition": "STSim_OutputStratumTransition"}
 group_by_dic = {"stateclass": [("IDScenario", "Timestep","Iteration", "StateLabelX","StateLabelY", "Stratum", "SecondaryStratum")],
-                "stock":[("IDScenario", "Timestep","StockType", "Iteration", "StateClass", "Stratum", "SecondaryStratum")],
+                "stock":[("IDScenario", "Timestep","StockType", "Iteration", "Stratum", "SecondaryStratum")],
                 "transition":[("IDScenario", "Timestep","Iteration", "TransitionGroup", "Stratum", "SecondaryStratum")]}
 
 
@@ -34,8 +34,8 @@ stratatable = stratatable.set_index('Name').to_dict()
 secondary_stratatable = secondary_stratatable.set_index('Name').to_dict()
 transition_groupstable = transition_groupstable.set_index('Name').to_dict()
 stocks_groupstable= stocks_groupstable.set_index('Name').to_dict()
-#percentiles=[99]
-percentiles = range(1,21) + range(80,100)
+percentiles=[99]
+#percentiles = range(1,21) + range(80,100)
 print (percentiles)
 def add_percentile_stateclass(table_type, table_name_dic, group_by_dic):
     for p in percentiles:
@@ -91,14 +91,14 @@ def add_strata_all_stock(table_type, table_name_dic, group_by_dic):
         for index, row in df.iterrows():
             stock =  stocks_groupstable['StockTypeID'][str(row.StockType)]
             scenario = int(row.IDScenario)
-            iteration = 1000+p
-            #iteration = 1050
+            #iteration = 1000+p
+            iteration = 1050
             timestep= int(row.Timestep)
-            stateclass = stateclasstable['StateClassID'][str(row.StateClass)]
+            stateclass = 9999
             stratum = int(stratatable['StratumID'][row.Stratum])
             secstratum = int(secondary_stratatable['SecondaryStratumID'][row.SecondaryStratum])
-            amount = float(row['pc(sum, '+str(p)+')'])
-            #amount = float(row['pc(sum, 50)'])
+            #amount = float(row['pc(sum, '+str(p)+')'])
+            amount = float(row['pc(sum, 50)'])
             try:
                 c.execute("INSERT INTO {tn} VALUES ({col1}, {col2}, {col3}, {col4}, {col5}, {col6}, {col7}, {col8})". \
                           format(tn=table_name_dic[table_type], col1=scenario, col2= iteration, col3 = timestep, col4 = stratum, col5 =secstratum, col6=stateclass, col7 = stock, col8=amount ))
@@ -152,8 +152,9 @@ def add_strata_all_transition(table_type, table_name_dic, group_by_dic):
 #table_type = "stateclass" #stock transition
 #add_percentile_stateclass(table_type, table_name_dic, group_by_dic)
 
-#table_type = "stock"
-#add_strata_all_stock(table_type, table_name_dic, group_by_dic)
+#For stock add All category in state_label_x table
+table_type = "stock"
+add_strata_all_stock(table_type, table_name_dic, group_by_dic)
 
-table_type = "transition"
-add_strata_all_transition(table_type, table_name_dic, group_by_dic)
+#table_type = "transition"
+#add_strata_all_transition(table_type, table_name_dic, group_by_dic)
