@@ -5,7 +5,7 @@ from osgeo import osr, gdal, ogr
 
 def update_albers_proj(path):
 	print(path)
-	rootpath = '/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon/media/'
+	rootpath = '/home/ubuntu/projects/landcarbon-cdi/landcarbon/media/'
 	tifpath = rootpath+path
 	gtif = gdal.Open(tifpath, gdal.GA_Update)
 	source_proj = gtif.GetProjectionRef()
@@ -146,8 +146,8 @@ def add_to_rasterseries(projectsummary, connection, scenario_id):
 	conn.close()
 	return series_ids
 
-sqlite_file = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon/media/California_Climate_Assessment_Model_v3.0.37.ssim"
-landcarbondb = r"/home/jsherba-pr/Projects/landcarbon-cdi/landcarbon.db"
+sqlite_file = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon/media/California_Climate_Assessment_Model_v3.0.37.ssim"
+landcarbondb = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon.db"
 
 project_id = (4008,)
 scenario_id = (1120,1201,1202,1203)
