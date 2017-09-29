@@ -34,8 +34,8 @@ def add_to_rasterstore(connection, json_file_in, layer_name):
 
 	for features in data["features"]:
 
-		#properties = features["properties"]["name"]
-		properties = features["properties"]["Name"]
+		properties = features["properties"]["name"]
+		#properties = features["properties"]["Name"]
 		#properties = features["properties"]["GRIDCODE"]
 
 		coordinates = features["geometry"]["coordinates"]
@@ -59,7 +59,7 @@ def add_to_rasterstore(connection, json_file_in, layer_name):
 	conn.close()
 
 
-json_file_in = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon/media/location/ca_ecoregions.json"
+json_file_in = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon/media/location/ca_counties2.json"
 landcarbondb = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon.db"
 layer_name = 'ca_counties'
 
