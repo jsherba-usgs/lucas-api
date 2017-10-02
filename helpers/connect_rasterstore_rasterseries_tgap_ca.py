@@ -1,6 +1,6 @@
 import sqlite3
 import pyspatialite.dbapi2 as db
-from ssim_api.ssim_query_functions import query_spatial_files_stateclass, query_projects, project_summary
+from ssim_api.ssim_query_functions import query_spatial_files_tgap, query_projects, project_summary
 from osgeo import osr, gdal, ogr
 
 def raster_min_max(rasterpath):
@@ -37,7 +37,7 @@ def update_albers_proj(path):
 	gtif.FlushCache()
 	gtif = None
 
-def stateclass_paths(sqlite_file, scenario_id, iteration, timestep):
+def stateclass_paths(sqlite_file, scenario_id,timestep, transition_group):
 #Collect state_class paths
 	#scenario_id = (1120,1201,1202,1203)
 	stateclass_paths = query_spatial_files_tgap(sqlite_file, scenario_id=scenario_id, timestep=timestep, transition_group=transition_group)
@@ -49,7 +49,7 @@ def spatialite_conn(landcarbondb):
 	c = conn.cursor()
 	return c, conn
 
-def add_to_rasterstore(connection, path_to_spatial_files, stateclass_paths, series_ids=None):
+def add_to_rasterstore(connection, path_to_spatial_files,path_to_media_folder, stateclass_paths, series_ids=None):
 	c = connection[0]
 	conn = connection[1]
 	table_name = 'app_rasterstore'
@@ -76,27 +76,27 @@ def add_to_rasterstore(connection, path_to_spatial_files, stateclass_paths, seri
 
 	for index, row in stateclass_paths.iterrows():
 		image = image_path + row['Path']
-        print(image_path)
-        print(row['Path'])
-        print(image)
+		print(image_path)
+		print(row['Path'])
+		print(image)
 
-        minval, maxval = raster_min_max(path_to_media_folder+image)
-        scenario = row['Scenario']
-        timestep = row['Timestep']
-        transition = row['TransitionGroupID']
-        iteration = "000"
-        event = str(timestep)+'-01-01'
+		minval, maxval = raster_min_max(path_to_media_folder+image)
+		scenario = row['Scenario']
+		timestep = row['Timestep']
+		transition = row['TransitionGroupID']
+		iteration = "000"
+		event = str(timestep)+'-01-01'
 
-        slug = 's'+str(scenario)+'-it0000'+'-ts'+str(timestep)+'-tgap'+str(transition)
-        if series_ids:
-            series_id = series_ids[scenario][transition]
-        else:
-            series_id = 'Null'
-        print(scenario, iteration, event, image,slug)
-        c.execute("INSERT INTO `app_rasterstore` (`id`,`image`,`width`,`height`,`event`,`srs`,`minval`,`maxval`,`nodata`,`xpixsize`,`ypixsize`,`name`,`slug`,`units`,`series_id`,`iteration`,geom) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,GeomFromText(?,4326))", (id, image, width, height, event, srs, minval, maxval, nodata, xpixsize, ypixsize, name, slug, units, series_id, iteration, geometry))
-        conn.commit()
-        id +=1
-    conn.close()
+		slug = 's'+str(scenario)+'-it0000'+'-ts'+str(timestep)+'-tgap'+str(transition)
+		if series_ids:
+		    series_id = series_ids[scenario][transition]
+		else:
+		    series_id = 'Null'
+		print(scenario, iteration, event, image,slug)
+		c.execute("INSERT INTO `app_rasterstore` (`id`,`image`,`width`,`height`,`event`,`srs`,`minval`,`maxval`,`nodata`,`xpixsize`,`ypixsize`,`name`,`slug`,`units`,`series_id`,`iteration`,geom) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,GeomFromText(?,4326))", (id, image, width, height, event, srs, minval, maxval, nodata, xpixsize, ypixsize, name, slug, units, series_id, iteration, geometry))
+		conn.commit()
+		id +=1
+	conn.close()
 
 def summary(sqlite_file, project_id = None):
 	if project_id:
@@ -134,33 +134,33 @@ def get_max_rasterstore_id(connection):
 	
 	return max_id
 
-def add_to_rasterseries(projectsummary, connection, scenario_id):
+def add_to_rasterseries(projectsummary, connection, scenario_id, transition_groups):
 	c = connection[0]
-    conn = connection[1]
-    table_name = 'app_rasterseries'
-    id = int(get_max_rasterseries_id(connection)[0][0]) + 1
-    print(id)
-    series_ids = {}
+	conn = connection[1]
+	table_name = 'app_rasterseries'
+	id = int(get_max_rasterseries_id(connection)[0][0]) + 1
+	print(id)
+	series_ids = {}
 
-    for index, row in projectsummary.iterrows():
-        scenario = row['ScenarioID']
-        print(scenario)
-        print(scenario_id)
-        if int(scenario) in scenario_id:
-            #iterations = range(row['MinimumIteration'], row["MaximumIteration"]+1)
-            begin = str(row["MinimumTimestep"]) + "-01-01 00:00:00"
-            end = str(row["MaximumTimestep"]) + "-01-01 00:00:00"
-            series_ids[scenario]={}
-            for transition in transition_groups:
-                iteration = '0000'
-                slug = 'scenario-'+str(scenario)+'-spatial-it'+str(iteration)+'-tgap-'+str(transition)
-                c.execute("INSERT INTO `app_rasterseries` (`id`,`name`,`slug`,`begin`,`end`) VALUES (?,?,?,?,?)", (id, 'NULL', slug, begin, end))
-                conn.commit()
-                series_ids[scenario][transition] = id
-                id += 1
+	for index, row in projectsummary.iterrows():
+	    scenario = row['ScenarioID']
+	    print(scenario)
+	    print(scenario_id)
+	    if int(scenario) in scenario_id:
+	        #iterations = range(row['MinimumIteration'], row["MaximumIteration"]+1)
+	        begin = str(row["MinimumTimestep"]) + "-01-01 00:00:00"
+	        end = str(row["MaximumTimestep"]) + "-01-01 00:00:00"
+	        series_ids[scenario]={}
+	        for transition in transition_groups:
+	            iteration = '0000'
+	            slug = 'scenario-'+str(scenario)+'-spatial-it'+str(iteration)+'-tgap-'+str(transition)
+	            c.execute("INSERT INTO `app_rasterseries` (`id`,`name`,`slug`,`begin`,`end`) VALUES (?,?,?,?,?)", (id, 'NULL', slug, begin, end))
+	            conn.commit()
+	            series_ids[scenario][transition] = id
+	            id += 1
 		 
-    conn.close()
-    return series_ids
+	conn.close()
+	return series_ids
 
 sqlite_file = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon/media/California_Climate_Assessment_Model_v3.0.37.ssim"
 landcarbondb = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon.db"
@@ -168,8 +168,8 @@ landcarbondb = r"/home/ubuntu/projects/landcarbon-cdi/landcarbon.db"
 project_id = (4008,)
 scenario_id = (1120,1201,1202,1203)
 iteration = (0,)
-timestep=range(2001,2102)
-transition_groups = (7129,7134,7141,7148,7151,7158,7171,7182)
+timestep=range(2002,2102)
+transition_groups = (4125,4130,4150)
 path_to_spatial_files = 'California_Climate_Assessment_ Model_v3.0.37/'
 path_to_media_folder = r'/home/ubuntu/projects/landcarbon-cdi/landcarbon/media/'
 
