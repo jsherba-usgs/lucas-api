@@ -9,7 +9,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ALLOWED_HOSTS = ['52.9.202.136', '.landcarbon.org']
+ALLOWED_HOSTS = ['www.usgs.gov', 'usgs.gov', '52.9.202.136', '.landcarbon.org']
 
 # SpatiaLite 4.3 path not found unless explicitly set.
 SPATIALITE_LIBRARY_PATH = '/usr/lib/x86_64-linux-gnu/mod_spatialite.so'
