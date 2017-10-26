@@ -8,7 +8,7 @@ from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from spillway import carto, renderers
 from spillway.forms import VectorTileForm
-from spillway.views import MapView, TileView
+from spillway.views import MapView, TileView, customMapView
 from spillway.viewsets import ReadOnlyGeoModelViewSet, ReadOnlyRasterModelViewSet, GenericGeoViewSet
 
 from . import forms, filters, models, pagination, query, serializers
@@ -99,7 +99,7 @@ class RasterStoreViewSet(ReadOnlyRasterModelViewSet):
         return super(RasterStoreViewSet, self).get_serializer(*args, **kwargs)
 
 
-class RasterMapView(MapView):
+class RasterMapView(customMapView):
     queryset = models.RasterStore.objects.all()
     lookup_field = 'slug'
 
