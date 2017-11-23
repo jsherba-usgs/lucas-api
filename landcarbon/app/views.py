@@ -5,10 +5,11 @@ from rest_framework.views import APIView
 from rest_framework.settings import api_settings
 #from rest_framework_csv import renderers as r
 from rest_framework import generics, viewsets
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from spillway import carto, renderers
+from spillway import carto, renderers, filters,mixins
 from spillway.forms import VectorTileForm
-from spillway.views import MapView, TileView, customMapView
+from spillway.views import MapView, TileView
 from spillway.viewsets import ReadOnlyGeoModelViewSet, ReadOnlyRasterModelViewSet, GenericGeoViewSet
 
 from . import forms, filters, models, pagination, query, serializers
@@ -98,8 +99,21 @@ class RasterStoreViewSet(ReadOnlyRasterModelViewSet):
             self.serializer_class = serializers.RasterCSVSerializer
         return super(RasterStoreViewSet, self).get_serializer(*args, **kwargs)
 
+class customMapView2(mixins.ResponseExceptionMixin, GenericAPIView):
+    """View for rendering map tiles from /{z}/{x}/{y}/ tile coordinates."""
+    renderer_classes = (renderers.MapnikRenderer,
+                        renderers.MapnikJPEGRenderer)
 
-class RasterMapView(customMapView):
+    def get(self, request, *args, **kwargs):
+        form = forms.RasterTileForm.from_request(request, view=self)
+        
+        m = carto.build_map([self.get_object()], form)
+        # Mapnik Map object is not pickleable, so it breaks the caching
+        # middleware. We must serialize the image before passing it off to the
+        # Response and Renderer.
+        return Response(m.render(request.accepted_renderer.format))
+
+class RasterMapView(customMapView2):
     queryset = models.RasterStore.objects.all()
     lookup_field = 'slug'
 
