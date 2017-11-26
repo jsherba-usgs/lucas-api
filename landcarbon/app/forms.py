@@ -64,7 +64,6 @@ class RasterTileForm(TileForm):
     style = forms.CharField(required=False)
     def clean(self):
         data = super(TileForm, self).clean()
-        print(data)
         x, y, z = map(data.get, ('x', 'y', 'z'))
         # Create bbox from NW and SE tile corners.
 
@@ -72,9 +71,14 @@ class RasterTileForm(TileForm):
             
             #extent = (transform_tile(x, y, z) +
             #          transform_tile(x + 1, y + 1, z))
-            
-            #extent =-159.85461369, 22.3883299982, -154.459224592, 18.7379531081)
-            extent = (-124.473333, 42.005860, -114.144959, 32.532193)
+            if x==2200:
+                extent =(-159.85461369, 22.3883299982, -154.459224592, 18.7379531081)
+                
+                
+            else:
+                extent = (-124.473333, 42.005860, -114.144959, 32.532193)
+
+            #
     
         except TypeError:
             pass

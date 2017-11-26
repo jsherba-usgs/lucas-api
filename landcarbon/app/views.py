@@ -7,12 +7,12 @@ from rest_framework.settings import api_settings
 from rest_framework import generics, viewsets
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from spillway import carto, renderers, filters,mixins
+from spillway import renderers, filters,mixins
 from spillway.forms import VectorTileForm
 from spillway.views import MapView, TileView
 from spillway.viewsets import ReadOnlyGeoModelViewSet, ReadOnlyRasterModelViewSet, GenericGeoViewSet
 
-from . import forms, filters, models, pagination, query, serializers
+from . import forms, filters, models, pagination, query, serializers, carto
 from .renderers import CSVRenderer, PaginatedCSVRenderer, PBFRenderer
 
 ReadOnlyGeoModelViewSet.pagination_class = pagination.FeaturePagination
@@ -106,8 +106,9 @@ class customMapView2(mixins.ResponseExceptionMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         form = forms.RasterTileForm.from_request(request, view=self)
-        
+       
         m = carto.build_map([self.get_object()], form)
+        
         # Mapnik Map object is not pickleable, so it breaks the caching
         # middleware. We must serialize the image before passing it off to the
         # Response and Renderer.
