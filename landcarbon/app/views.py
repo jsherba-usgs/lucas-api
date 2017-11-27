@@ -87,8 +87,6 @@ class RasterStoreViewSet(ReadOnlyRasterModelViewSet):
                         (CSVRenderer,))
    
     filter_backends = (filters.URLFilterBackend,)
-    #filter_backends = (DjangoFilterBackend,)
-    #filter_class = ("iteration",)#
     filter_class = filters.RasterStoreFilterSet
     lookup_field = 'slug'
 

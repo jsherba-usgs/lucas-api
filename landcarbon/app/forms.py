@@ -69,8 +69,6 @@ class RasterTileForm(TileForm):
 
         try:
             
-            #extent = (transform_tile(x, y, z) +
-            #          transform_tile(x + 1, y + 1, z))
             if x==2200:
                 extent =(-159.85461369, 22.3883299982, -154.459224592, 18.7379531081)
                 

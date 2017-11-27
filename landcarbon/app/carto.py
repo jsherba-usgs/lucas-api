@@ -41,10 +41,6 @@ class Map(object):
    
     def __init__(self, width, length):
         
-        #m =mapnik.Map(2200,1620)
-        #m = mapnik.Map(256, 256)
-        #m = mapnik.Map(1440, 1660)
-        #m = mapnik.Map(2160, 2490)
         m = mapnik.Map(width, length)
         
         try:
